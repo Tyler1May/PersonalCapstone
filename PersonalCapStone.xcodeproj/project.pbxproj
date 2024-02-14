@@ -52,6 +52,9 @@
 		F763982E2B73F3580001C317 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F763982D2B73F3580001C317 /* GoogleService-Info.plist */; };
 		F7764C292B767916009707CC /* CarDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7764C282B767916009707CC /* CarDetailView.swift */; };
 		F7764C2B2B767928009707CC /* SearchFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7764C2A2B767928009707CC /* SearchFilterView.swift */; };
+		F784E1172B7A874E001BCB54 /* AuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F784E1162B7A874E001BCB54 /* AuthController.swift */; };
+		F7C05F292B7BC169003DEBD5 /* CodableFirebase in Frameworks */ = {isa = PBXBuildFile; productRef = F7C05F282B7BC169003DEBD5 /* CodableFirebase */; };
+		F7C05F2B2B7D2106003DEBD5 /* CarsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C05F2A2B7D2106003DEBD5 /* CarsController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +77,8 @@
 		F763982D2B73F3580001C317 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F7764C282B767916009707CC /* CarDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarDetailView.swift; sourceTree = "<group>"; };
 		F7764C2A2B767928009707CC /* SearchFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilterView.swift; sourceTree = "<group>"; };
+		F784E1162B7A874E001BCB54 /* AuthController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthController.swift; sourceTree = "<group>"; };
+		F7C05F2A2B7D2106003DEBD5 /* CarsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarsController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +100,7 @@
 				F76398082B73F33A0001C317 /* FirebaseCrashlytics in Frameworks */,
 				F76398282B73F33A0001C317 /* FirebaseRemoteConfigSwift in Frameworks */,
 				F763981A2B73F33A0001C317 /* FirebaseInAppMessaging-Beta in Frameworks */,
+				F7C05F292B7BC169003DEBD5 /* CodableFirebase in Frameworks */,
 				F763980C2B73F33A0001C317 /* FirebaseDatabaseSwift in Frameworks */,
 				F76398162B73F33A0001C317 /* FirebaseFunctions in Frameworks */,
 				F763982C2B73F33A0001C317 /* FirebaseStorageCombine-Community in Frameworks */,
@@ -137,6 +143,8 @@
 				F76397CC2B7291A80001C317 /* PersonalCapStoneApp.swift */,
 				F76397F02B73E0810001C317 /* API.swift */,
 				F76397F22B73E08B0001C317 /* Car.swift */,
+				F784E1162B7A874E001BCB54 /* AuthController.swift */,
+				F7C05F2A2B7D2106003DEBD5 /* CarsController.swift */,
 				F76397EF2B73DF8B0001C317 /* Views */,
 				F76397E22B7298100001C317 /* Styling */,
 				F76397D02B7291A90001C317 /* Assets.xcassets */,
@@ -223,6 +231,7 @@
 				F76398272B73F33A0001C317 /* FirebaseRemoteConfigSwift */,
 				F76398292B73F33A0001C317 /* FirebaseStorage */,
 				F763982B2B73F33A0001C317 /* FirebaseStorageCombine-Community */,
+				F7C05F282B7BC169003DEBD5 /* CodableFirebase */,
 			);
 			productName = PersonalCapStone;
 			productReference = F76397C92B7291A80001C317 /* PersonalCapStone.app */;
@@ -254,6 +263,7 @@
 			mainGroup = F76397C02B7291A80001C317;
 			packageReferences = (
 				F76397F62B73F33A0001C317 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				F7C05F272B7BC169003DEBD5 /* XCRemoteSwiftPackageReference "CodableFirebase" */,
 			);
 			productRefGroup = F76397CA2B7291A80001C317 /* Products */;
 			projectDirPath = "";
@@ -287,7 +297,9 @@
 				F7764C292B767916009707CC /* CarDetailView.swift in Sources */,
 				F76397F52B73F1D70001C317 /* TabBarView.swift in Sources */,
 				F76397F32B73E08B0001C317 /* Car.swift in Sources */,
+				F784E1172B7A874E001BCB54 /* AuthController.swift in Sources */,
 				F76397E12B7297030001C317 /* RoundedShape.swift in Sources */,
+				F7C05F2B2B7D2106003DEBD5 /* CarsController.swift in Sources */,
 				F76397EC2B73DC030001C317 /* SearchView.swift in Sources */,
 				F76397DB2B7293480001C317 /* LoginView.swift in Sources */,
 				F76397EA2B73D0240001C317 /* ForgotPasswordView.swift in Sources */,
@@ -512,6 +524,14 @@
 				minimumVersion = 10.21.0;
 			};
 		};
+		F7C05F272B7BC169003DEBD5 /* XCRemoteSwiftPackageReference "CodableFirebase" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/alickbass/CodableFirebase";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -649,6 +669,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F76397F62B73F33A0001C317 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = "FirebaseStorageCombine-Community";
+		};
+		F7C05F282B7BC169003DEBD5 /* CodableFirebase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F7C05F272B7BC169003DEBD5 /* XCRemoteSwiftPackageReference "CodableFirebase" */;
+			productName = CodableFirebase;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

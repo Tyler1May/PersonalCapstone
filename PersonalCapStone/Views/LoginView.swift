@@ -10,7 +10,7 @@ import SwiftUI
 struct LoginView: View {
     @State var email = String()
     @State var password = String()
-    
+    @EnvironmentObject var authController: AuthController
     
     var body: some View {
         VStack {
@@ -33,7 +33,7 @@ struct LoginView: View {
             VStack {
                 CustomTextField(imageName: "envelope", placeHolder: "Email", text: $email)
                     .padding()
-                CustomTextField(imageName: "lock", placeHolder: "Password", text: $password)
+                CustomSecureTextField(imageName: "lock", placeHolder: "Password", text: $password)
                     .padding()
             }
             .padding()
@@ -49,8 +49,13 @@ struct LoginView: View {
                 }
                 .padding()
             }
+            
             Button {
-                
+                authController.login(email: email, password: password) { success, str in
+                    if !success {
+                        #warning("handle Errors")
+                    }
+                }
             } label: {
                 Text("Login")
                     .foregroundStyle(Color(AppTheme.text))

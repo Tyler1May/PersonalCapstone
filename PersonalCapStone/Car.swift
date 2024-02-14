@@ -8,7 +8,8 @@
 import Foundation
 import SwiftUI
 
-struct Car: Codable {
+struct Car: Codable, Identifiable {
+    let id = UUID()
     var city_mpg: Int
     var `class`: String
     var combination_mpg: Int
@@ -24,8 +25,8 @@ struct Car: Codable {
     
     var transmissionDescription: String {
         switch transmission {
-        case "a": return "automatic"
-        case "m": return "manual"
+        case "a": return "Automatic"
+        case "m": return "Manual"
         default: return "n/a"
         }
     }

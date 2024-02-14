@@ -17,6 +17,26 @@ struct CustomTextField: View {
             HStack {
                 Image(systemName: imageName)
                 TextField(placeHolder, text: $text)
+                    .disableAutocorrection(true)
+                    .autocapitalization(.none)
+            }
+            Divider()
+        }
+    }
+}
+
+struct CustomSecureTextField: View {
+    let imageName: String
+    let placeHolder: String
+    @Binding var text: String
+    
+    var body: some View {
+        VStack{
+            HStack {
+                Image(systemName: imageName)
+                SecureField(placeHolder, text: $text)
+                    .disableAutocorrection(true)
+                    .autocapitalization(.none)
             }
             Divider()
         }

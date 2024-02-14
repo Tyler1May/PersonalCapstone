@@ -8,13 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @EnvironmentObject var authController: AuthController
+    @EnvironmentObject var carsController: CarsController
+    
     var body: some View {
         NavigationStack {
-            LoginView()
+            if authController.userSession == nil {
+                LoginView()
+            } else {
+                TabBarView()
+            }
         }
+//        use to sign out if before signout button added
+//        .onAppear(perform: {
+//            authController.signOut()
+//        })
     }
 }
 
 #Preview {
     ContentView()
+        .environmentObject(AuthController())
 }

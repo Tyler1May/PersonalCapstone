@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FavoritesView: View {
     
-    @State var favoreiteCars: [Car] = [Car(city_mpg: 30, class: "Sedan", combination_mpg: 28, cylinders: 4, displacement: 2.0, drive: "FWD", fuel_type: "Gasoline", highway_mpg: 35, make: "Honda", model: "Civic", transmission: "m", year: 2023)]
+    @EnvironmentObject var carsController: CarsController
     
     var body: some View {
         NavigationView {
@@ -28,27 +28,31 @@ struct FavoritesView: View {
                 .clipShape(RoundedShape(corners: [.bottomRight]))
                 
                 
-                if favoreiteCars.isEmpty {
+                if carsController.favoriteCars.isEmpty {
                     Spacer()
                     Text("No favorites yet")
                         .font(.largeTitle)
                         .opacity(0.2)
                     Spacer()
                 } else {
-                    List(favoreiteCars, id: \.make) { car in
+                    List(carsController.favoriteCars) { car in
                         NavigationLink(destination: CarDetailView(car: car)) {
                             HStack {
                                 Text(Image(systemName: "car.fill"))
                                     .padding()
                                 VStack(alignment: .leading) {
-                                    Text("Car: \(car.make) \(car.model)")
-                                    
+                                    Text("Vehicle: \(car.make) \(car.model)")
                                     Text("Year: \(String(car.year))")
                                 }
                                 Spacer()
-                                Text(Image(systemName: "star"))
+                                Image(systemName: carsController.favoriteCars.contains(where: { $0.id == car.id }) ? "star.fill" : "star")
                                     .font(.title)
-                                
+                                    .foregroundStyle(carsController.favoriteCars.contains(where: { $0.id == car.id }) ? .yellow : Color(AppTheme.text))
+                                    .onTapGesture {
+                                        guard let favoriteI = carsController.favoriteCars.firstIndex(where: { $0.id == car.id }) else { return }
+                                        carsController.favoriteCars.remove(at: favoriteI)
+                                        
+                                    }
                             }
                         }
                         .listRowBackground(Color.gray.opacity(0.2))
@@ -64,4 +68,5 @@ struct FavoritesView: View {
 
 #Preview {
     FavoritesView()
+        .environmentObject(CarsController())
 }

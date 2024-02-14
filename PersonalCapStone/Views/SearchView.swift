@@ -9,28 +9,25 @@ import SwiftUI
 
 struct SearchView: View {
     
-    let dummyCars = [
-        Car(city_mpg: 25, class: "SUV", combination_mpg: 22, cylinders: 6, displacement: 3.0, drive: "AWD", fuel_type: "Gasoline", highway_mpg: 30, make: "Toyota", model: "Rav4", transmission: "a", year: 2022),
-
-        Car(city_mpg: 30, class: "Sedan", combination_mpg: 28, cylinders: 4, displacement: 2.0, drive: "FWD", fuel_type: "Gasoline", highway_mpg: 35, make: "Honda", model: "Civic", transmission: "m", year: 2023),
-
-        Car(city_mpg: 20, class: "Truck", combination_mpg: 18, cylinders: 8, displacement: 5.0, drive: "4WD", fuel_type: "Diesel", highway_mpg: 25, make: "Ford", model: "F-150", transmission: "a", year: 2021),
-        
-        Car(city_mpg: 25, class: "SUV", combination_mpg: 22, cylinders: 6, displacement: 3.0, drive: "AWD", fuel_type: "Gasoline", highway_mpg: 30, make: "Toyota", model: "Rav4", transmission: "a", year: 2022),
-
-        Car(city_mpg: 30, class: "Sedan", combination_mpg: 28, cylinders: 4, displacement: 2.0, drive: "FWD", fuel_type: "Gasoline", highway_mpg: 35, make: "Honda", model: "Civic", transmission: "m", year: 2023),
-
-        Car(city_mpg: 20, class: "Truck", combination_mpg: 18, cylinders: 8, displacement: 5.0, drive: "4WD", fuel_type: "Diesel", highway_mpg: 25, make: "Ford", model: "F-150", transmission: "a", year: 2021)
-    ]
+    @EnvironmentObject var carsController: CarsController
+    
     
     @State var searchText = ""
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 0) {
                 HStack {
                     TextField("Search", text: $searchText)
-                    Image(systemName: "magnifyingglass")
+                        .padding(.trailing)
+                    Button {
+                        
+                    } label: {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundStyle(Color(AppTheme.text))
+                            .font(.title)
+                            .frame(width: 25)
+                    }
                 }
                 .padding()
                 .frame(width: 400, height: 50)
@@ -38,38 +35,44 @@ struct SearchView: View {
                 .background(Color(AppTheme.primary))
                 HStack {
                     Spacer()
-                    Button {
-                        
+                    NavigationLink {
+                        SearchFilterView()
+                            .toolbar(.hidden)
                     } label: {
-                        Text("\(Image(systemName: "line.3.horizontal.decrease.circle.fill"))Filter")
+                        Text("\(Image(systemName: "line.3.horizontal.decrease.circle.fill"))  Filter")
                             .foregroundStyle(Color(AppTheme.text))
                     }
                     .foregroundStyle(.white)
                     .frame(width: 100, height: 25)
                     .background(.white)
                     .clipShape(RoundedShape(corners: [.allCorners]))
-                    .padding(.trailing)
+                    .padding(.trailing, 5)
                     .padding(.bottom)
                 }
                 .background(Color(AppTheme.primary))
                 .clipShape(RoundedShape(corners: [.bottomLeft]))
                 
-                List(dummyCars, id: \.make) { car in
+                List(carsController.dummyCars) { car in
                     NavigationLink(destination: CarDetailView(car: car)) {
                         HStack {
                             Text(Image(systemName: "car.fill"))
                                 .padding()
                             VStack(alignment: .leading) {
                                 Text("Vehicle: \(car.make) \(car.model)")
-                                
                                 Text("Year: \(String(car.year))")
                             }
                             Spacer()
-                            Text(Image(systemName: "star"))
+                            Image(systemName: carsController.favoriteCars.contains(where: { $0.id == car.id }) ? "star.fill" : "star")
                                 .font(.title)
-                            
+                                .foregroundStyle(carsController.favoriteCars.contains(where: { $0.id == car.id }) ? .yellow : Color(AppTheme.text))
+                                .onTapGesture {
+                                    if carsController.favoriteCars.contains(where: { $0.id == car.id }) {
+                                        carsController.favoriteCars.removeAll(where: { $0.id == car.id })
+                                    } else {
+                                        carsController.favoriteCars.append(car)
+                                    }
+                                }
                         }
-                        
                     }
                     .listRowBackground(Color.gray.opacity(0.2))
                 }
@@ -83,4 +86,5 @@ struct SearchView: View {
     
 #Preview {
     SearchView()
+        .environmentObject(CarsController())
 }

@@ -11,6 +11,7 @@ struct SignUpView: View {
     @State var email = String()
     @State var password = String()
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var authController: AuthController
     
     var body: some View {
         VStack {
@@ -39,7 +40,10 @@ struct SignUpView: View {
             .padding()
             
             Button {
-                
+                authController.register(email: email, password: password) { success, str in
+                    #warning("Handle Error")
+                }
+                dismiss()
             } label: {
                 Text("Create Account")
                     .foregroundStyle(Color(AppTheme.text))
