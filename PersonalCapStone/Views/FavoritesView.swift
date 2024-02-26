@@ -45,11 +45,12 @@ struct FavoritesView: View {
                                     Text("Year: \(String(car.year))")
                                 }
                                 Spacer()
-                                Image(systemName: carsController.favoriteCars.contains(where: { $0.id == car.id }) ? "star.fill" : "star")
+                                Image(systemName: carsController.favoriteCars.contains(car) ? "star.fill" : "star")
                                     .font(.title)
-                                    .foregroundStyle(carsController.favoriteCars.contains(where: { $0.id == car.id }) ? .yellow : Color(AppTheme.text))
+                                    .foregroundStyle(carsController.favoriteCars.contains(car) ? .yellow : Color(AppTheme.text))
                                     .onTapGesture {
-                                        guard let favoriteI = carsController.favoriteCars.firstIndex(where: { $0.id == car.id }) else { return }
+                                        guard let favoriteI = carsController.favoriteCars.firstIndex(of: car) else { return }
+                                        carsController.deleteFavoriteCars(firestoreID: car.firestoreId)
                                         carsController.favoriteCars.remove(at: favoriteI)
                                         
                                     }

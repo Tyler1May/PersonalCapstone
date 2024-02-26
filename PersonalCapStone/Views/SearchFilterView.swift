@@ -58,10 +58,10 @@ struct SearchFilterView: View {
                 .font(.custom("standard", size: 20))
                 
                 Section("Filter Years:") {
-                        TextField("From", text: $minYear)
-                            .keyboardType(.numberPad)
-                        TextField("To", text: $maxYear)
-                            .keyboardType(.numberPad)
+                    TextField("From", text: $minYear)
+                        .keyboardType(.numberPad)
+                    TextField("To", text: $maxYear)
+                        .keyboardType(.numberPad)
                 }
                 .listRowBackground(Color(.gray.opacity(0.2)))
                 .foregroundStyle(Color(AppTheme.text))
@@ -72,19 +72,23 @@ struct SearchFilterView: View {
             .scrollContentBackground(.hidden)
             .scrollDisabled(true)
             
-            Button {
-                dismiss()
-            } label: {
-                Text("Apply Filters")
-                    .foregroundStyle(Color(AppTheme.text))
+            NavigationLink(destination: SearchView(minYear: minYear, maxYear: maxYear, selectedSearch: selectedSearch, selectedSort: selectedSort)) {
+                Button {
+                    dismiss()
+                } label: {
+                    Text("Apply Filters")
+                        .foregroundStyle(Color(AppTheme.text))
+                }
+                .padding()
+                .frame(width: 250, height: 50)
+                .background(Color(AppTheme.primary))
+                .clipShape(RoundedShape(corners: [.allCorners]))
+                .padding()
+                
+                Spacer()
             }
-            .padding()
-            .frame(width: 250, height: 50)
-            .background(Color(AppTheme.primary))
-            .clipShape(RoundedShape(corners: [.allCorners]))
-            .padding()
-            
-            Spacer()
+            .padding(.leading, 60)
+            .padding(.bottom)
         }
         .ignoresSafeArea()
     }

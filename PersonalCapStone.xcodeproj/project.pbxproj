@@ -55,6 +55,8 @@
 		F784E1172B7A874E001BCB54 /* AuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F784E1162B7A874E001BCB54 /* AuthController.swift */; };
 		F7C05F292B7BC169003DEBD5 /* CodableFirebase in Frameworks */ = {isa = PBXBuildFile; productRef = F7C05F282B7BC169003DEBD5 /* CodableFirebase */; };
 		F7C05F2B2B7D2106003DEBD5 /* CarsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C05F2A2B7D2106003DEBD5 /* CarsController.swift */; };
+		F7C05F2D2B7E6256003DEBD5 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C05F2C2B7E6256003DEBD5 /* ProfileView.swift */; };
+		F7C05F2F2B7E7490003DEBD5 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C05F2E2B7E7490003DEBD5 /* DataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +81,8 @@
 		F7764C2A2B767928009707CC /* SearchFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilterView.swift; sourceTree = "<group>"; };
 		F784E1162B7A874E001BCB54 /* AuthController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthController.swift; sourceTree = "<group>"; };
 		F7C05F2A2B7D2106003DEBD5 /* CarsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarsController.swift; sourceTree = "<group>"; };
+		F7C05F2C2B7E6256003DEBD5 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		F7C05F2E2B7E7490003DEBD5 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +148,7 @@
 				F76397F02B73E0810001C317 /* API.swift */,
 				F76397F22B73E08B0001C317 /* Car.swift */,
 				F784E1162B7A874E001BCB54 /* AuthController.swift */,
+				F7C05F2E2B7E7490003DEBD5 /* DataManager.swift */,
 				F7C05F2A2B7D2106003DEBD5 /* CarsController.swift */,
 				F76397EF2B73DF8B0001C317 /* Views */,
 				F76397E22B7298100001C317 /* Styling */,
@@ -183,6 +188,7 @@
 				F76397ED2B73DD070001C317 /* FavoritesView.swift */,
 				F7764C282B767916009707CC /* CarDetailView.swift */,
 				F7764C2A2B767928009707CC /* SearchFilterView.swift */,
+				F7C05F2C2B7E6256003DEBD5 /* ProfileView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -302,9 +308,11 @@
 				F7C05F2B2B7D2106003DEBD5 /* CarsController.swift in Sources */,
 				F76397EC2B73DC030001C317 /* SearchView.swift in Sources */,
 				F76397DB2B7293480001C317 /* LoginView.swift in Sources */,
+				F7C05F2D2B7E6256003DEBD5 /* ProfileView.swift in Sources */,
 				F76397EA2B73D0240001C317 /* ForgotPasswordView.swift in Sources */,
 				F76397E62B7298550001C317 /* CustomTextField.swift in Sources */,
 				F76397E82B729BDE0001C317 /* SignUpView.swift in Sources */,
+				F7C05F2F2B7E7490003DEBD5 /* DataManager.swift in Sources */,
 				F76397DD2B7293690001C317 /* AppTheme.swift in Sources */,
 				F76397CF2B7291A80001C317 /* ContentView.swift in Sources */,
 				F7764C2B2B767928009707CC /* SearchFilterView.swift in Sources */,

@@ -20,10 +20,16 @@ struct TabBarView: View {
                 .tabItem {
                     Image(systemName: "star")
                 }
+            
+            ProfileView()
+                .tabItem {
+                    Image(systemName: "person")
+                }
         }
     }
 }
 
 #Preview {
     TabBarView()
+        .environmentObject(CarsController())
 }

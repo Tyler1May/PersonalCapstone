@@ -10,6 +10,7 @@ import SwiftUI
 struct LoginView: View {
     @State var email = String()
     @State var password = String()
+    @State var isPasswordVisible = false
     @EnvironmentObject var authController: AuthController
     
     var body: some View {
@@ -33,10 +34,23 @@ struct LoginView: View {
             VStack {
                 CustomTextField(imageName: "envelope", placeHolder: "Email", text: $email)
                     .padding()
-                CustomSecureTextField(imageName: "lock", placeHolder: "Password", text: $password)
-                    .padding()
+                HStack {
+                    if isPasswordVisible {
+                        CustomTextField(imageName: "lock", placeHolder: "Password", text: $password)
+                            .padding()
+                    } else {
+                        CustomSecureTextField(imageName: "lock", placeHolder: "Password", text: $password)
+                            .padding()
+                    }
+                }.overlay(alignment: .trailing) {
+                    Image(systemName: isPasswordVisible ? "eye.fill" : "eye.slash.fill")
+                        .foregroundStyle(Color(AppTheme.text))
+                        .padding()
+                        .onTapGesture {
+                            isPasswordVisible.toggle()
+                        }
+                }
             }
-            .padding()
             
             HStack {
                 Spacer()

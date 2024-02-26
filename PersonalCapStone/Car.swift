@@ -7,11 +7,13 @@
 
 import Foundation
 import SwiftUI
+import FirebaseFirestoreSwift
 
-struct Car: Codable, Identifiable {
-    let id = UUID()
+struct Car: Codable, Equatable, Identifiable {
+    @DocumentID var firestoreId: String?
+    var id = UUID().uuidString
     var city_mpg: Int
-    var `class`: String
+    var carClass: String
     var combination_mpg: Int
     var cylinders: Int
     var displacement: Double
@@ -30,8 +32,36 @@ struct Car: Codable, Identifiable {
         default: return "n/a"
         }
     }
+    
+    static func == (lhs: Car, rhs: Car) -> Bool {
+        return lhs.city_mpg == rhs.city_mpg &&
+               lhs.carClass == rhs.carClass &&
+               lhs.combination_mpg == rhs.combination_mpg &&
+               lhs.cylinders == rhs.cylinders &&
+               lhs.displacement == rhs.displacement &&
+               lhs.drive == rhs.drive &&
+               lhs.fuel_type == rhs.fuel_type &&
+               lhs.highway_mpg == rhs.highway_mpg &&
+               lhs.make == rhs.make &&
+               lhs.model == rhs.model &&
+               lhs.transmission == rhs.transmission &&
+               lhs.year == rhs.year
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case firestoreId = "firestoreId"
+        case id = "id"
+        case city_mpg = "city_mpg"
+        case carClass = "class"
+        case combination_mpg = "combination_mpg"
+        case cylinders = "cylinders"
+        case displacement = "displacement"
+        case drive = "drive"
+        case fuel_type = "fuel_type"
+        case highway_mpg = "highway_mpg"
+        case make = "make"
+        case model = "model"
+        case transmission = "transmission"
+        case year = "year"
+    }
 }
-
-
-
-

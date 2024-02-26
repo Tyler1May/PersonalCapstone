@@ -20,10 +20,6 @@ struct ContentView: View {
                 TabBarView()
             }
         }
-//        use to sign out if before signout button added
-//        .onAppear(perform: {
-//            authController.signOut()
-//        })
     }
 }
 

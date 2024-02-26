@@ -61,10 +61,33 @@ struct CarDetailView: View {
                 
                 Button {
                     if let car = car {
-                        if carsController.favoriteCars.contains(where: { $0.id == car.id }) {
-                            carsController.favoriteCars.removeAll(where: { $0.id == car.id })
+                        if carsController.favoriteCars.contains(car) {
+                            carsController.deleteFavoriteCars(firestoreID: car.firestoreId)
+                            carsController.favoriteCars.removeAll(where: { $0 == car })
                         } else {
-                            carsController.favoriteCars.append(car)
+                            let carData: [String: Any] = [
+                                "id": car.id as Any,
+                                "city_mpg": car.city_mpg,
+                                "class": car.carClass,
+                                "combination_mpg": car.combination_mpg,
+                                "cylinders": car.cylinders,
+                                "displacement": car.displacement,
+                                "drive": car.drive,
+                                "fuel_type": car.fuel_type,
+                                "highway_mpg": car.highway_mpg,
+                                "make": car.make,
+                                "model": car.model,
+                                "transmission": car.transmission,
+                                "year": car.year
+                            ]
+                            carsController.addToFavorites(carData: carData)
+                            Task {
+                                do{
+                                    self.carsController.favoriteCars = try await carsController.fetchFavoriteCars()
+                                } catch {
+                                    
+                                }
+                            }
                         }
                     }
                 } label: {
@@ -73,7 +96,7 @@ struct CarDetailView: View {
                             .foregroundStyle(Color(AppTheme.text))
                             .padding(.trailing, 100)
                             .font(.title)
-                        if !(carsController.favoriteCars.contains(where: { $0.id == car?.id})) {
+                        if !(car.map { carsController.favoriteCars.contains($0) } ?? false) {
                             Image(systemName: "star")
                                 .foregroundStyle(Color(AppTheme.text))
                                 .font(.title)
@@ -111,6 +134,6 @@ struct CarDetailView: View {
 }
 
 #Preview {
-    CarDetailView(car: Car(city_mpg: 10, class: "fast", combination_mpg: 10, cylinders: 10, displacement: 10.0, drive: "fwd", fuel_type: "gas", highway_mpg: 10, make: "big", model: "car", transmission: "a", year: 1021))
+    CarDetailView(car: Car(city_mpg: 10, carClass: "fast", combination_mpg: 10, cylinders: 10, displacement: 10.0, drive: "fwd", fuel_type: "gas", highway_mpg: 10, make: "big", model: "car", transmission: "a", year: 1021))
         .environmentObject(CarsController())
 }
