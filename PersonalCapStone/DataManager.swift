@@ -7,6 +7,7 @@
 
 import Foundation
 import Firebase
+import FirebaseFirestoreSwift
 
 
 extension CarsController {
@@ -24,16 +25,22 @@ extension CarsController {
         return arrOfData as [Car]
     }
     
-    func addToFavorites(carData: [String: Any]) {
+    func addToFavorites(carData: Car) {
         let db = Firestore.firestore()
-        let ref = db.collection("FavoriteCars").document()
+        let ref = db.collection("FavoriteCars").document(carData.id)
         
-        ref.setData(carData) { err in
-            if let err = err {
-                print("Error adding document: \(err)")
-            } else {
-                print("Document added with ID: \(ref.documentID)")
+        do {
+            let data = try Firestore.Encoder().encode(carData)
+            
+            ref.setData(data) { err in
+                if let err = err {
+                    print("Error adding document: \(err)")
+                } else {
+                    print("Document added with ID: \(ref.documentID)")
+                }
             }
+        } catch {
+            print("Failed to encode car")
         }
     }
     

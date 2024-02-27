@@ -78,22 +78,7 @@ struct SearchView: View {
                                             }
                                             carsController.favoriteCars.removeAll(where: { $0 == car })
                                         } else {
-                                            let carData: [String: Any] = [
-                                                "id": car.id as Any,
-                                                "city_mpg": car.city_mpg,
-                                                "class": car.carClass,
-                                                "combination_mpg": car.combination_mpg,
-                                                "cylinders": car.cylinders,
-                                                "displacement": car.displacement,
-                                                "drive": car.drive,
-                                                "fuel_type": car.fuel_type,
-                                                "highway_mpg": car.highway_mpg,
-                                                "make": car.make,
-                                                "model": car.model,
-                                                "transmission": car.transmission,
-                                                "year": car.year
-                                            ]
-                                            carsController.addToFavorites(carData: carData)
+                                            carsController.addToFavorites(carData: car)
                                             Task {
                                                 do{
                                                     let cars = try await carsController.fetchFavoriteCars()
