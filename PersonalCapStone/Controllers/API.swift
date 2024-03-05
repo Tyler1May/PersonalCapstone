@@ -40,8 +40,10 @@ struct API {
         }
         
         let decoder = JSONDecoder()
-        let cars = try decoder.decode([Car].self, from: data)
-        return cars
+        let cars = try decoder.decode([ApiCar].self, from: data)
+        return cars.compactMap {
+            $0.toCar()
+        }
         
     }
 }

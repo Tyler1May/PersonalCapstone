@@ -62,18 +62,17 @@ struct CarDetailView: View {
                 Button {
                     if let car = car {
                         if carsController.favoriteCars.contains(car) {
-                            carsController.deleteFavoriteCars(firestoreID: car.firestoreId)
+                            for i in carsController.favoriteCars {
+                                if i == car {
+                                    carsController.deleteFavoriteCars(firestoreID: i.firestoreId!)
+                                }
+                            }
                             carsController.favoriteCars.removeAll(where: { $0 == car })
                         } else {
                             carsController.addToFavorites(carData: car)
-                            Task {
-                                do{
-                                    self.carsController.favoriteCars = try await carsController.fetchFavoriteCars()
-                                } catch {
-                                    
-                                }
-                            }
+                            getFavoriteCar()
                         }
+
                     }
                 } label: {
                     HStack {
@@ -116,7 +115,22 @@ struct CarDetailView: View {
         .ignoresSafeArea()
         .navigationBarBackButtonHidden()
     }
+    
+    func getFavoriteCar() {
+        Task {
+            do{
+                let cars = try await carsController.fetchFavoriteCars()
+                DispatchQueue.main.async {
+                    self.carsController.favoriteCars = cars
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
 }
+
+
 
 #Preview {
     CarDetailView(car: Car(city_mpg: 10, carClass: "fast", combination_mpg: 10, cylinders: 10, displacement: 10.0, drive: "fwd", fuel_type: "gas", highway_mpg: 10, make: "big", model: "car", transmission: "a", year: 1021))

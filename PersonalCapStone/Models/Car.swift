@@ -48,20 +48,4 @@ struct Car: Codable, Equatable, Identifiable {
                lhs.year == rhs.year
     }
     
-    enum CodingKeys: String, CodingKey {
-        case firestoreId = "firestoreId"
-        case id = "id"
-        case city_mpg = "city_mpg"
-        case carClass = "class"
-        case combination_mpg = "combination_mpg"
-        case cylinders = "cylinders"
-        case displacement = "displacement"
-        case drive = "drive"
-        case fuel_type = "fuel_type"
-        case highway_mpg = "highway_mpg"
-        case make = "make"
-        case model = "model"
-        case transmission = "transmission"
-        case year = "year"
-    }
 }

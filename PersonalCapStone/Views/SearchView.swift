@@ -79,16 +79,7 @@ struct SearchView: View {
                                             carsController.favoriteCars.removeAll(where: { $0 == car })
                                         } else {
                                             carsController.addToFavorites(carData: car)
-                                            Task {
-                                                do{
-                                                    let cars = try await carsController.fetchFavoriteCars()
-                                                    DispatchQueue.main.async {
-                                                        self.carsController.favoriteCars = cars
-                                                    }
-                                                } catch {
-                                                    print(error.localizedDescription)
-                                                }
-                                            }
+                                            getFavoriteCar()
                                         }
                                     }
                             }
@@ -107,6 +98,19 @@ struct SearchView: View {
                 let cars = try await API.getCars(param: param, searchText: searchText)
                 DispatchQueue.main.async {
                     self.carsController.cars = cars
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func getFavoriteCar() {
+        Task {
+            do{
+                let cars = try await carsController.fetchFavoriteCars()
+                DispatchQueue.main.async {
+                    self.carsController.favoriteCars = cars
                 }
             } catch {
                 print(error.localizedDescription)
