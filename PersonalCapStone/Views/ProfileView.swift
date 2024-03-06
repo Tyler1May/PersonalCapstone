@@ -9,9 +9,10 @@ import SwiftUI
 
 struct ProfileView: View {
     
-    var email = String()
-    var password = String()
     @EnvironmentObject var authController: AuthController
+    @State private var isShowingAlert = false
+    @State private var isPasswordVisible = false
+    
     
     var body: some View {
         VStack {
@@ -30,18 +31,30 @@ struct ProfileView: View {
             
             Form {
                 Section("Email :") {
-                    Text("dummy1@fake. com")
+                    Text("\(authController.email)")
                         .foregroundStyle(Color(AppTheme.text))
                 }
                 .listSectionSpacing(50)
                 
                 Section("Password :") {
-                    Text("*************")
-                    Button {
-                        
-                    } label: {
-                        Text("Change Password")
+                    HStack {
+                        Text(isPasswordVisible ? "\(authController.password)" : "***********")
+                        Spacer()
+                        Image(systemName: isPasswordVisible ? "eye.fill" : "eye.slash.fill")
                             .foregroundStyle(Color(AppTheme.text))
+                            .padding()
+                            .onTapGesture {
+                                isPasswordVisible.toggle()
+                            }
+                    }
+                    Button {
+                        isShowingAlert = true
+                    } label: {
+                        Text("Reset Password")
+                            .foregroundStyle(Color(AppTheme.text))
+                    }
+                    .alert(isPresented: $isShowingAlert) {
+                        Alert(title: Text("Are You Sure You Want To Reset Password"), message: Text("Reseting Password Will Sign You Out. Check Your email to reset password"), primaryButton: .destructive(Text("Reset"), action: resetPassword), secondaryButton: .default(Text("Cancel")))
                     }
                     .frame(width: 300, height: 50)
                     .background(Color(AppTheme.primary))
@@ -69,8 +82,14 @@ struct ProfileView: View {
         }
         .ignoresSafeArea()
     }
+    
+    func resetPassword() {
+        authController.resetPassword(email: authController.email)
+        authController.signOut()
+    }
 }
 
 #Preview {
     ProfileView()
+        .environmentObject(AuthController())
 }

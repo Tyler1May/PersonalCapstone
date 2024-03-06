@@ -10,7 +10,7 @@ import SwiftUI
 struct LoginView: View {
     @State var email = String()
     @State var password = String()
-    @State var isPasswordVisible = false
+    @State private var isPasswordVisible = false
     @EnvironmentObject var authController: AuthController
     
     var body: some View {

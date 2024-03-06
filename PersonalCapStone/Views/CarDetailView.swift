@@ -64,7 +64,7 @@ struct CarDetailView: View {
                         if carsController.favoriteCars.contains(car) {
                             for i in carsController.favoriteCars {
                                 if i == car {
-                                    carsController.deleteFavoriteCars(firestoreID: i.firestoreId!)
+                                    carsController.deleteFavoriteCars(firestoreID: i.firestoreId)
                                 }
                             }
                             carsController.favoriteCars.removeAll(where: { $0 == car })

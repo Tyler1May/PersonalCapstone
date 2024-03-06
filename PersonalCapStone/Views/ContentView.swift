@@ -12,6 +12,7 @@ struct ContentView: View {
     @EnvironmentObject var authController: AuthController
     @EnvironmentObject var carsController: CarsController
     
+    
     var body: some View {
         NavigationStack {
             if authController.userSession == nil {

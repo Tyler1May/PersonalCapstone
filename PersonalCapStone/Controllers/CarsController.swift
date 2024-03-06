@@ -11,6 +11,7 @@ class CarsController: ObservableObject {
     @Published var cars: [Car] = []
     @Published var favoriteCars: [Car] = []
     
+    
     @Published var dummyFavorites: [Car] = []
     @Published var dummyCars = [
          Car(city_mpg: 25, carClass: "SUV", combination_mpg: 22, cylinders: 6, displacement: 3.0, drive: "AWD", fuel_type: "Gasoline", highway_mpg: 30, make: "Toyota", model: "Rav4", transmission: "a", year: 2022),

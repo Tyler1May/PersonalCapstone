@@ -13,17 +13,17 @@ struct TabBarView: View {
         TabView {
             SearchView()
                 .tabItem {
-                    Image(systemName: "magnifyingglass")
+                    Label("", systemImage: "magnifyingglass")
                 }
             
             FavoritesView()
                 .tabItem {
-                    Image(systemName: "star")
+                    Label("", systemImage: "star")
                 }
             
             ProfileView()
                 .tabItem {
-                    Image(systemName: "person")
+                    Label("", systemImage: "person")
                 }
         }
     }

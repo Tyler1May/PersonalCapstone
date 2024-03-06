@@ -12,11 +12,10 @@ struct SearchView: View {
     @EnvironmentObject var carsController: CarsController
     
     @State var searchText = ""
-    @State var minYear = String()
-    @State var maxYear = String()
-    @State var selectedSearch = "make"
-    @State var selectedSort = String()
-    
+    var minYear = String()
+    var maxYear = String()
+    var selectedSearch = "make"
+    var selectedSort = String() // newest to oldest
     
     var body: some View {
         NavigationStack {
@@ -56,7 +55,9 @@ struct SearchView: View {
                 .background(Color(AppTheme.primary))
                 .clipShape(RoundedShape(corners: [.bottomLeft]))
                 
-                List(carsController.dummyCars) { car in
+                
+                
+                List(carsController.cars) { car in
                         NavigationLink(destination: CarDetailView(car: car)) {
                             HStack {
                                 Text(Image(systemName: "car.fill"))
@@ -88,6 +89,8 @@ struct SearchView: View {
                 }
                 .listRowSpacing(5)
                 .scrollContentBackground(.hidden)
+                
+                Spacer()
             }
         }
     }

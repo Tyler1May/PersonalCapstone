@@ -12,9 +12,9 @@ struct SearchFilterView: View {
     @State var minYear = String()
     @State var maxYear = String()
     @Environment(\.dismiss) var dismiss
-    @State var selectedSearch = "Make"
+    @State var selectedSearch = "make"
     let searchOptions = ["Make", "Model"]
-    @State var selectedSort = "Newest"
+    @State var selectedSort = "newest"
     let sortOptions = ["Newest", "Oldest"]
     
     var body: some View {
@@ -72,7 +72,7 @@ struct SearchFilterView: View {
             .scrollContentBackground(.hidden)
             .scrollDisabled(true)
             
-            NavigationLink(destination: SearchView(minYear: minYear, maxYear: maxYear, selectedSearch: selectedSearch, selectedSort: selectedSort)) {
+            NavigationLink(destination: SearchView(minYear: minYear, maxYear: maxYear, selectedSearch: selectedSearch.lowercased(), selectedSort: selectedSort)) {
                 Button {
                     dismiss()
                 } label: {

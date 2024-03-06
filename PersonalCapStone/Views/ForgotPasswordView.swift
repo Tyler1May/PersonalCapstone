@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ForgotPasswordView: View {
     @State var email = String()
+    @State private var isShowingAlert = false
+    @EnvironmentObject var authController: AuthController
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -36,10 +38,15 @@ struct ForgotPasswordView: View {
             .padding()
             
             Button {
-                
+                authController.resetPassword(email: email)
+                isShowingAlert = true
+                email = ""
             } label: {
                 Text("Reset")
                     .foregroundStyle(Color(AppTheme.text))
+            }
+            .alert(isPresented: $isShowingAlert) {
+                Alert(title: Text("Password Reset Sent"), message: Text("Check email to reset password"), dismissButton: .default(Text("OK")))
             }
             .frame(width: 350, height: 50)
             .background(Color(AppTheme.primary))
@@ -49,7 +56,7 @@ struct ForgotPasswordView: View {
             Button {
                 dismiss()
             } label: {
-                Text("Cancel")
+                Text("Back")
                     .foregroundStyle(Color(AppTheme.text))
             }
             .frame(width: 350, height: 50)
