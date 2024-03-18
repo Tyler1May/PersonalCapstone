@@ -12,10 +12,11 @@ struct SearchFilterView: View {
     @State var minYear = String()
     @State var maxYear = String()
     @Environment(\.dismiss) var dismiss
-    @State var selectedSearch = "make"
+    @EnvironmentObject var carsController: CarsController
+    @State var selectedSearch = ""
     let searchOptions = ["Make", "Model"]
-    @State var selectedSort = "newest"
-    let sortOptions = ["Newest", "Oldest"]
+    @State var selectedSort = ""
+    let sortOptions = ["Newest To Oldest", "Oldest To Newest"]
     
     var body: some View {
         VStack(spacing: 0) {
@@ -58,10 +59,10 @@ struct SearchFilterView: View {
                 .font(.custom("standard", size: 20))
                 
                 Section("Filter Years:") {
-                    TextField("From", text: $minYear)
-                        .keyboardType(.numberPad)
-                    TextField("To", text: $maxYear)
-                        .keyboardType(.numberPad)
+                        TextField("From", text: $minYear)
+                            .keyboardType(.numberPad)
+                        TextField("To", text: $maxYear)
+                            .keyboardType(.numberPad)
                 }
                 .listRowBackground(Color(.gray.opacity(0.2)))
                 .foregroundStyle(Color(AppTheme.text))
@@ -72,8 +73,13 @@ struct SearchFilterView: View {
             .scrollContentBackground(.hidden)
             .scrollDisabled(true)
             
-            NavigationLink(destination: SearchView(minYear: minYear, maxYear: maxYear, selectedSearch: selectedSearch.lowercased(), selectedSort: selectedSort)) {
+            NavigationLink(destination: SearchView()) {
                 Button {
+                    carsController.selectedSearch = selectedSearch.lowercased()
+                    carsController.selectedSort = selectedSort
+                    carsController.maxYear = Int(maxYear) ?? 9999
+                    carsController.minYear = Int(minYear) ?? 0
+                    carsController.filterCars()
                     dismiss()
                 } label: {
                     Text("Apply Filters")
@@ -90,6 +96,12 @@ struct SearchFilterView: View {
             .padding(.leading, 60)
             .padding(.bottom)
         }
+        .onAppear {
+            minYear = String(carsController.minYear)
+            maxYear = String(carsController.maxYear)
+            selectedSearch = carsController.selectedSearch.capitalized
+            selectedSort = carsController.selectedSort
+        }
         .ignoresSafeArea()
     }
 }
@@ -98,4 +110,6 @@ struct SearchFilterView: View {
 
 #Preview {
     SearchFilterView()
+        .environmentObject(CarsController())
 }
+

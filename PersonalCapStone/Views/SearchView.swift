@@ -12,19 +12,21 @@ struct SearchView: View {
     @EnvironmentObject var carsController: CarsController
     
     @State var searchText = ""
-    var minYear = String()
-    var maxYear = String()
-    var selectedSearch = "make"
-    var selectedSort = String() // newest to oldest
     
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
                     HStack {
-                        TextField("Search", text: $searchText)
+                        TextField("Search By \(carsController.selectedSearch.capitalized)", text: $searchText)
                             .padding(.trailing)
                         Button {
-                            searchCars(param: selectedSearch, searchText: searchText)
+                            if !searchText.isEmpty {
+                                searchCars(param: carsController.selectedSearch, searchText: searchText) {
+                                    carsController.filterCars()
+                                }
+                            } else {
+                                return
+                            }
                         } label: {
                             Image(systemName: "magnifyingglass")
                                 .foregroundStyle(Color(AppTheme.text))
@@ -39,10 +41,10 @@ struct SearchView: View {
                     HStack {
                         Spacer()
                         NavigationLink {
-                            SearchFilterView()
+                            SearchFilterView(selectedSearch: carsController.selectedSearch)
                                 .toolbar(.hidden)
                         } label: {
-                            Text("\(Image(systemName: "line.3.horizontal.decrease.circle.fill"))  Filter")
+                            Text("\(Image(systemName: "slider.horizontal.3"))  Filter")
                                 .foregroundStyle(Color(AppTheme.text))
                         }
                         .foregroundStyle(.white)
@@ -57,7 +59,7 @@ struct SearchView: View {
                 
                 
                 
-                List(carsController.cars) { car in
+                List(carsController.filteredCars) { car in
                         NavigationLink(destination: CarDetailView(car: car)) {
                             HStack {
                                 Text(Image(systemName: "car.fill"))
@@ -95,12 +97,13 @@ struct SearchView: View {
         }
     }
     
-    func searchCars(param: String, searchText: String){
+    func searchCars(param: String, searchText: String, completion: @escaping () -> Void) {
         Task {
             do {
                 let cars = try await API.getCars(param: param, searchText: searchText)
                 DispatchQueue.main.async {
                     self.carsController.cars = cars
+                    completion()
                 }
             } catch {
                 print(error.localizedDescription)

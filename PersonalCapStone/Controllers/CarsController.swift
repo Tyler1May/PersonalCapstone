@@ -10,7 +10,11 @@ import Foundation
 class CarsController: ObservableObject {
     @Published var cars: [Car] = []
     @Published var favoriteCars: [Car] = []
-    
+    @Published var filteredCars: [Car] = []
+    @Published var selectedSearch = "Make"
+    @Published var selectedSort = "Newest To Oldest"
+    @Published var minYear = 0
+    @Published var maxYear = 9999
     
     @Published var dummyFavorites: [Car] = []
     @Published var dummyCars = [
@@ -20,6 +24,25 @@ class CarsController: ObservableObject {
 
          Car(city_mpg: 20, carClass: "Truck", combination_mpg: 18, cylinders: 8, displacement: 5.0, drive: "4WD", fuel_type: "Diesel", highway_mpg: 25, make: "Ford", model: "F-150", transmission: "a", year: 2021)
      ]
+    
+    func filterCars() {
+        switch selectedSort {
+        case "Newest To Oldest":
+            filteredCars = cars.filter { car in
+                car.year >= minYear && car.year <= maxYear
+            }.sorted(by: { $0.year > $1.year })
+        case "Oldest To Newest":
+            filteredCars = cars.filter { car in
+                car.year >= minYear && car.year <= maxYear
+            }.sorted(by: { $0.year < $1.year })
+        default:
+            filteredCars = cars.filter { car in
+                car.year >= maxYear && car.year <= maxYear
+            }
+        }
+        
+    }
+    
     
     init() {
         Task{
@@ -33,5 +56,6 @@ class CarsController: ObservableObject {
             }
         }
     }
+    
 
 }

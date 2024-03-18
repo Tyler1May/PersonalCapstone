@@ -54,7 +54,7 @@ struct ProfileView: View {
                             .foregroundStyle(Color(AppTheme.text))
                     }
                     .alert(isPresented: $isShowingAlert) {
-                        Alert(title: Text("Are You Sure You Want To Reset Password"), message: Text("Reseting Password Will Sign You Out. Check Your email to reset password"), primaryButton: .destructive(Text("Reset"), action: resetPassword), secondaryButton: .default(Text("Cancel")))
+                        Alert(title: Text("Are You Sure You Want To Reset Password"), message: Text("Reseting Password Will Sign You Out. Check Your email to reset password."), primaryButton: .destructive(Text("Reset"), action: resetPassword), secondaryButton: .default(Text("Cancel")))
                     }
                     .frame(width: 300, height: 50)
                     .background(Color(AppTheme.primary))
