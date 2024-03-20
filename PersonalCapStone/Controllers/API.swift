@@ -9,7 +9,10 @@ import Foundation
 import SwiftUI
 
 enum APICallErrors: Error, LocalizedError {
-    case invaldSearchParam
+    case invalidSearchParam
+    case invalidURl
+    case invalidJson
+    case invalidResponse
 }
 
 struct API {
@@ -36,7 +39,7 @@ struct API {
         print(String(describing: str))
         
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-            throw APICallErrors.invaldSearchParam
+            throw APICallErrors.invalidSearchParam
         }
         
         let decoder = JSONDecoder()
@@ -44,6 +47,38 @@ struct API {
         return cars.compactMap {
             $0.toCar()
         }
+        
+    }
+    
+    static func getCarImg(q: String) async throws -> String? {
+        let url = URL(string: "https://www.googleapis.com/customsearch/v1?key=AIzaSyAVbz2mZPOpBNkzY5EXGI45fvDXyKAoeKU&cx=66dab38731f5e4960&q=\(q) front three-quarter view&searchType=image&num=1")!
+        
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+//        let str = String(data: data, encoding: .utf8)
+//        print(String(describing: str))
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APICallErrors.invalidResponse
+        }
+        
+        if httpResponse.statusCode == 429 {
+            return nil
+        } else if httpResponse.statusCode != 200 {
+            throw APICallErrors.invalidJson
+        }
+        
+        guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else { throw APICallErrors.invalidJson }
+        
+        if let items = json["items"] as? [[String: Any]] {
+            for item in items {
+                if let link = item["link"] as? String {
+                    return link
+                }
+            }
+        }
+        
+        return nil
         
     }
 }

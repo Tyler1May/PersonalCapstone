@@ -24,6 +24,7 @@ struct Car: Codable, Equatable, Identifiable {
     var model: String
     var transmission: String
     var year: Int
+    var img: String?
     
     var transmissionDescription: String {
         switch transmission {
@@ -35,17 +36,18 @@ struct Car: Codable, Equatable, Identifiable {
     
     static func == (lhs: Car, rhs: Car) -> Bool {
         return lhs.city_mpg == rhs.city_mpg &&
-               lhs.carClass == rhs.carClass &&
-               lhs.combination_mpg == rhs.combination_mpg &&
-               lhs.cylinders == rhs.cylinders &&
-               lhs.displacement == rhs.displacement &&
-               lhs.drive == rhs.drive &&
-               lhs.fuel_type == rhs.fuel_type &&
-               lhs.highway_mpg == rhs.highway_mpg &&
-               lhs.make == rhs.make &&
-               lhs.model == rhs.model &&
-               lhs.transmission == rhs.transmission &&
-               lhs.year == rhs.year
+                lhs.carClass == rhs.carClass &&
+                lhs.combination_mpg == rhs.combination_mpg &&
+                lhs.cylinders == rhs.cylinders &&
+                lhs.displacement == rhs.displacement &&
+                lhs.drive == rhs.drive &&
+                lhs.fuel_type == rhs.fuel_type &&
+                lhs.highway_mpg == rhs.highway_mpg &&
+                lhs.make == rhs.make &&
+                lhs.model == rhs.model &&
+                lhs.transmission == rhs.transmission &&
+                lhs.year == rhs.year &&
+                lhs.img == rhs.img
     }
     
 }

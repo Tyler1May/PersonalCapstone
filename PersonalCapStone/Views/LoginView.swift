@@ -12,7 +12,7 @@ struct LoginView: View {
     @State var password = String()
     @State private var isPasswordVisible = false
     @EnvironmentObject var authController: AuthController
-    
+    @State private var errorText: String?
     var body: some View {
         VStack {
             VStack(alignment: .trailing) {
@@ -34,6 +34,10 @@ struct LoginView: View {
             VStack {
                 CustomTextField(imageName: "envelope", placeHolder: "Email", text: $email)
                     .padding()
+                if let errorText {
+                    Text(errorText)
+                        .foregroundStyle(Color.red)
+                }
                 HStack {
                     if isPasswordVisible {
                         CustomTextField(imageName: "lock", placeHolder: "Password", text: $password)

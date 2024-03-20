@@ -38,13 +38,41 @@ struct CarDetailView: View {
             .clipShape(RoundedShape(corners: [.bottomLeft]))
             
             VStack() {
-                Image("Test")
-                    .padding()
-                    .frame(width: 375, height: 225)
-                    .clipShape(LessRoundedShape(corners: [.allCorners]))
-                    .padding()
-                
-                Text("\(car?.make ?? "") \(car?.model ?? "")")
+                AsyncImage(url: URL(string: car?.img ?? "")) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 375, height: 225)
+                            .clipShape(LessRoundedShape(corners: [.allCorners]))
+                            .padding()
+                    case .empty:
+                        Image(systemName: "car.side.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 375, height: 225)
+                            .clipShape(LessRoundedShape(corners: [.allCorners]))
+                            .padding()
+                    case .failure(_):
+                        Image(systemName: "car.side.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 375, height: 225)
+                            .clipShape(LessRoundedShape(corners: [.allCorners]))
+                            .padding()
+
+                    @unknown default:
+                        Image(systemName: "car.side.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 375, height: 225)
+                            .clipShape(LessRoundedShape(corners: [.allCorners]))
+                            .padding()
+
+                    }
+                }
+                Text("\(car?.make.capitalized ?? "") \(car?.model.capitalized ?? "")")
                     .font(.title)
                     .foregroundStyle(Color(AppTheme.text))
                     .frame(maxWidth: .infinity)
@@ -60,20 +88,7 @@ struct CarDetailView: View {
                 Spacer()
                 
                 Button {
-                    if let car = car {
-                        if carsController.favoriteCars.contains(car) {
-                            for i in carsController.favoriteCars {
-                                if i == car {
-                                    carsController.deleteFavoriteCars(firestoreID: i.firestoreId)
-                                }
-                            }
-                            carsController.favoriteCars.removeAll(where: { $0 == car })
-                        } else {
-                            carsController.addToFavorites(carData: car)
-                            getFavoriteCar()
-                        }
-
-                    }
+                    toggleFavCar()
                 } label: {
                     HStack {
                         Text("Favorite")
@@ -128,6 +143,24 @@ struct CarDetailView: View {
             }
         }
     }
+    
+    func toggleFavCar() {
+        if let car = car {
+            if carsController.favoriteCars.contains(car) {
+                for i in carsController.favoriteCars {
+                    if i == car {
+                        carsController.deleteFavoriteCars(firestoreID: i.firestoreId)
+                    }
+                }
+                carsController.favoriteCars.removeAll(where: { $0 == car })
+            } else {
+                carsController.addToFavorites(carData: car)
+                getFavoriteCar()
+            }
+
+        }
+    }
+    
 }
 
 

@@ -22,7 +22,7 @@ struct PersonalCapStoneApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(authController)
-                .environmentObject(carsController)
+                .environmentObject(CarsController.shared)
         }
     }
 }

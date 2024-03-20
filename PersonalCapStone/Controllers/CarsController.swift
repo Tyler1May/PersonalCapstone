@@ -8,6 +8,7 @@
 import Foundation
 
 class CarsController: ObservableObject {
+    static let shared = CarsController()
     @Published var cars: [Car] = []
     @Published var favoriteCars: [Car] = []
     @Published var filteredCars: [Car] = []
@@ -42,6 +43,43 @@ class CarsController: ObservableObject {
         }
         
     }
+    
+    func searchCars(param: String, searchText: String, completion: @escaping () -> Void) {
+        Task {
+            do {
+                var cars = try await API.getCars(param: param, searchText: searchText)
+                for (i, car) in cars.enumerated() {
+                    cars[i].img = try await API.getCarImg(q: "\(car.year) \(car.make) \(car.model)")
+            
+                }
+                
+                
+                
+                DispatchQueue.main.async {
+                    self.cars = cars
+                    completion()
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    
+    
+    func getFavoriteCar() {
+        Task {
+            do{
+                let cars = try await self.fetchFavoriteCars()
+                DispatchQueue.main.async {
+                    self.favoriteCars = cars
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+
     
     
     init() {

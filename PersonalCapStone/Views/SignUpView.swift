@@ -39,12 +39,7 @@ struct SignUpView: View {
             }
             .padding()
             
-            Button {
-                authController.register(email: email, password: password) { success, str in
-                    #warning("Handle Error")
-                }
-                dismiss()
-            } label: {
+            Button(action: registerUser) {
                 Text("Create Account")
                     .foregroundStyle(Color(AppTheme.text))
             }
@@ -62,6 +57,18 @@ struct SignUpView: View {
             .padding()
         }
         .ignoresSafeArea()
+    }
+    
+    func registerUser() {
+//        Task {
+//            try await authController.register(email:password:_:)
+//        }
+        //this code is for changing it to try await instead of using completion blocks
+        authController.register(email: email, password: password) { success, str in
+            #warning("Handle Error")
+        }
+        dismiss()
+
     }
 }
 
