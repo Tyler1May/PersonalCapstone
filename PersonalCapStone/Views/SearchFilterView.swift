@@ -97,8 +97,8 @@ struct SearchFilterView: View {
             .padding(.bottom)
         }
         .onAppear {
-            minYear = String(carsController.minYear)
-            maxYear = String(carsController.maxYear)
+            minYear = carsController.minYear == 0 ? "" : String(carsController.minYear)
+            maxYear = carsController.maxYear == 9999 ? "" : String(carsController.maxYear)
             selectedSearch = carsController.selectedSearch.capitalized
             selectedSort = carsController.selectedSort
         }

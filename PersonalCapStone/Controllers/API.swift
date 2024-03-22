@@ -25,7 +25,7 @@ struct API {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
         
         components.queryItems = [
-            "limit": "50",
+            "limit": "1",
             "\(param.lowercased())": "\(searchText)"
         ].map { URLQueryItem(name: $0.key, value: $0.value) }
         

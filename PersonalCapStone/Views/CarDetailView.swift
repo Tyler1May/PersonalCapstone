@@ -17,7 +17,7 @@ struct CarDetailView: View {
     
     var carDetails: [String] {
         [
-            "Make: \(car?.make.capitalized ?? "")", "Model: \(car?.model.capitalized ?? "") ", "Year: \(car?.year ?? 0)", "Fuel Type: \(car?.fuel_type ?? "")", "Drive: \(car?.drive ?? "")", "Transmission: \(car?.transmissionDescription ?? "")", "Cylinders: \(car?.cylinders ?? 0)",
+            "Make: \(car?.make.capitalized ?? "")", "Model: \(car?.model.capitalized ?? "") ", "Year: \(car?.year ?? 0)", "Fuel Type: \(car?.fuel_type ?? "")", "Drive: \(car?.drive ?? "")", "Displacement: \(car?.displacement ?? 0)", "Transmission: \(car?.transmissionDescription ?? "")", "Cylinders: \(car?.cylinders ?? 0)",
             "Highway Mpg: \(car?.highway_mpg ?? 0)", "City Mpg: \(car?.city_mpg ?? 0)", "Combination Mpg: \(car?.combination_mpg ?? 0)"
         ]
     }
@@ -28,7 +28,7 @@ struct CarDetailView: View {
                 HStack {
                     Spacer()
                 }
-                Text("Car Details")
+                Text("\(car?.make.capitalized ?? "") \(car?.model.capitalized ?? "")")
                     .foregroundStyle(Color(AppTheme.text))
                     .font(.largeTitle)
             }
@@ -72,10 +72,6 @@ struct CarDetailView: View {
 
                     }
                 }
-                Text("\(car?.make.capitalized ?? "") \(car?.model.capitalized ?? "")")
-                    .font(.title)
-                    .foregroundStyle(Color(AppTheme.text))
-                    .frame(maxWidth: .infinity)
                 
                 VStack(alignment: .leading) {
                     ForEach(carDetails, id: \.self) { detail in

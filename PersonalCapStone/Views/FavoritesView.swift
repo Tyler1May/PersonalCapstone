@@ -38,7 +38,7 @@ struct FavoritesView: View {
                     List(carsController.favoriteCars) { car in
                         NavigationLink(destination: CarDetailView(car: car)) {
                             HStack {
-                                Text(Image(systemName: "car.fill"))
+                                Text(Image(systemName: "car.side.fill"))
                                     .padding()
                                 VStack(alignment: .leading) {
                                     Text("Vehicle: \(car.make) \(car.model)")
