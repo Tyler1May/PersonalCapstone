@@ -19,14 +19,15 @@ struct API {
     static let baseUrl = "https://api.api-ninjas.com/v1/cars?"
     var searchText: String
     
-    static func getCars(param: String, searchText: String) async throws -> [Car] {
+    static func getCars(param: String, year: String, searchText: String) async throws -> [Car] {
         let url = URL(string: "\(API.baseUrl)")!
         
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
         
         components.queryItems = [
             "limit": "1",
-            "\(param.lowercased())": "\(searchText)"
+            "\(param.lowercased())": "\(searchText)",
+            "year": "\(year)"
         ].map { URLQueryItem(name: $0.key, value: $0.value) }
         
         var request = URLRequest(url: components.url!)

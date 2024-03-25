@@ -15,6 +15,8 @@ struct SearchFilterView: View {
     @EnvironmentObject var carsController: CarsController
     @State var selectedSearch = ""
     let searchOptions = ["Make", "Model"]
+    @State var selectedYear = Int()
+    let years = Array(1990...2023)
     @State var selectedSort = ""
     let sortOptions = ["Newest To Oldest", "Oldest To Newest"]
     
@@ -37,7 +39,14 @@ struct SearchFilterView: View {
                 Section("Search By:") {
                     Picker("", selection: $selectedSearch) {
                         ForEach(searchOptions, id: \.self) {
-                            Text($0)
+                            Text($0).tag($0)
+                        }
+                    }
+                    .listRowBackground(Color(.gray.opacity(0.2)))
+                    
+                    Picker("", selection: $selectedYear) {
+                        ForEach(years, id: \.self) { year in
+                            Text(String(year)).tag(year)
                         }
                     }
                     .listRowBackground(Color(.gray.opacity(0.2)))
@@ -46,27 +55,27 @@ struct SearchFilterView: View {
                 .foregroundStyle(Color(AppTheme.text))
                 .font(.custom("standard", size: 20))
                 
-                Section("Sort By:") {
-                    Picker("", selection: $selectedSort) {
-                        ForEach(sortOptions, id: \.self) {
-                            Text($0)
-                        }
-                    }
-                    .listRowBackground(Color(.gray.opacity(0.2)))
-                    
-                }
-                .foregroundStyle(Color(AppTheme.text))
-                .font(.custom("standard", size: 20))
+//                Section("Sort By:") {
+//                    Picker("", selection: $selectedSort) {
+//                        ForEach(sortOptions, id: \.self) {
+//                            Text($0).tag($0)
+//                        }
+//                    }
+//                    .listRowBackground(Color(.gray.opacity(0.2)))
+//                    
+//                }
+//                .foregroundStyle(Color(AppTheme.text))
+//                .font(.custom("standard", size: 20))
                 
-                Section("Filter Years:") {
-                        TextField("From", text: $minYear)
-                            .keyboardType(.numberPad)
-                        TextField("To", text: $maxYear)
-                            .keyboardType(.numberPad)
-                }
-                .listRowBackground(Color(.gray.opacity(0.2)))
-                .foregroundStyle(Color(AppTheme.text))
-                .font(.custom("standard", size: 20))
+//                Section("Filter Years:") {
+//                        TextField("From", text: $minYear)
+//                            .keyboardType(.numberPad)
+//                        TextField("To", text: $maxYear)
+//                            .keyboardType(.numberPad)
+//                }
+//                .listRowBackground(Color(.gray.opacity(0.2)))
+//                .foregroundStyle(Color(AppTheme.text))
+//                .font(.custom("standard", size: 20))
                 
             }
             .listRowSpacing(10)
@@ -77,8 +86,9 @@ struct SearchFilterView: View {
                 Button {
                     carsController.selectedSearch = selectedSearch.lowercased()
                     carsController.selectedSort = selectedSort
-                    carsController.maxYear = Int(maxYear) ?? 9999
-                    carsController.minYear = Int(minYear) ?? 0
+//                    carsController.maxYear = Int(maxYear) ?? 9999
+//                    carsController.minYear = Int(minYear) ?? 0
+                    carsController.year = selectedYear
                     carsController.filterCars()
                     dismiss()
                 } label: {
@@ -97,8 +107,9 @@ struct SearchFilterView: View {
             .padding(.bottom)
         }
         .onAppear {
-            minYear = carsController.minYear == 0 ? "" : String(carsController.minYear)
-            maxYear = carsController.maxYear == 9999 ? "" : String(carsController.maxYear)
+//            minYear = carsController.minYear == 0 ? "" : String(carsController.minYear)
+//            maxYear = carsController.maxYear == 9999 ? "" : String(carsController.maxYear)
+            selectedYear = carsController.year
             selectedSearch = carsController.selectedSearch.capitalized
             selectedSort = carsController.selectedSort
         }

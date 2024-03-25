@@ -11,6 +11,7 @@ struct FavoritesView: View {
     
     @EnvironmentObject var carsController: CarsController
     
+    
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
@@ -63,6 +64,9 @@ struct FavoritesView: View {
                 }
             }
             .ignoresSafeArea()
+        }
+        .onAppear {
+            carsController.getFavoriteCar()
         }
     }
 }

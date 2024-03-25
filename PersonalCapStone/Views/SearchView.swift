@@ -19,13 +19,20 @@ struct SearchView: View {
                 HStack {
                     TextField("Search By \(carsController.selectedSearch.capitalized)", text: $searchText)
                         .padding(.trailing)
-                    Button {
-                        if !searchText.isEmpty {
-                            carsController.searchCars(param: carsController.selectedSearch, searchText: searchText) {
+                        .onSubmit() {
+                            guard !searchText.isEmpty else {
+                                return
+                            }
+                            carsController.searchCars(param: carsController.selectedSearch, searchText: searchText, year: String(carsController.year)) {
                                 carsController.filterCars()
                             }
-                        } else {
+                        }
+                    Button {
+                        guard !searchText.isEmpty else {
                             return
+                        }
+                        carsController.searchCars(param: carsController.selectedSearch, searchText: searchText, year: String(carsController.year)) {
+                            carsController.filterCars()
                         }
                     } label: {
                         Image(systemName: "magnifyingglass")
@@ -94,6 +101,7 @@ struct SearchView: View {
                 Spacer()
             }
         }
+        
     }
     
 }

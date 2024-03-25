@@ -9,12 +9,21 @@ import Foundation
 import Firebase
 import FirebaseFirestoreSwift
 
+enum FetchErrors: Error {
+    case noCurrentUser
+}
 
 extension CarsController {
     
     func fetchFavoriteCars() async throws -> [Car] {
+        
+        guard let currentUserUID = Auth.auth().currentUser?.uid else {
+            throw FetchErrors.noCurrentUser
+        }
         let db = Firestore.firestore()
-        let arrOfData = try await db.collection("FavoriteCars").getDocuments().documents.map {
+//        let currentUserUID = Auth.auth().currentUser?.uid ?? ""
+        
+        let arrOfData = try await db.collection("users").document(currentUserUID).collection("FavoriteCars").getDocuments().documents.map {
             do {
                 return try $0.data(as: Car.self)
             } catch {
@@ -27,7 +36,8 @@ extension CarsController {
     
     func addToFavorites(carData: Car) {
         let db = Firestore.firestore()
-        let ref = db.collection("FavoriteCars").document(carData.id)
+        let currentUserUID = Auth.auth().currentUser?.uid ?? ""
+        let ref = db.collection("users").document(currentUserUID).collection("FavoriteCars").document(carData.id)
         
         do {
             let data = try Firestore.Encoder().encode(carData)
@@ -46,10 +56,11 @@ extension CarsController {
     
     func deleteFavoriteCars(firestoreID: String?) {
         let db = Firestore.firestore()
+        let currentUserUID = Auth.auth().currentUser?.uid ?? ""
         if let carId = firestoreID {
             Task {
                 do {
-                    try await db.collection("FavoriteCars").document(carId).delete()
+                    try await db.collection("users").document(currentUserUID).collection("FavoriteCars").document(carId).delete()
                 } catch {
                     print("error: \(error.localizedDescription)")
                 }
@@ -58,6 +69,5 @@ extension CarsController {
             print("Unable to delete favorite car")
         }
     }
-
-
 }
+

@@ -16,6 +16,7 @@ class CarsController: ObservableObject {
     @Published var selectedSort = "Newest To Oldest"
     @Published var minYear = 0
     @Published var maxYear = 9999
+    @Published var year = 2023
     
     @Published var dummyFavorites: [Car] = []
     @Published var dummyCars = [
@@ -44,17 +45,14 @@ class CarsController: ObservableObject {
         
     }
     
-    func searchCars(param: String, searchText: String, completion: @escaping () -> Void) {
+    func searchCars(param: String, searchText: String, year: String, completion: @escaping () -> Void) {
         Task {
             do {
-                var cars = try await API.getCars(param: param, searchText: searchText)
+                var cars = try await API.getCars(param: param, year: year, searchText: searchText)
                 for (i, car) in cars.enumerated() {
                     cars[i].img = try await API.getCarImg(q: "\(car.year) \(car.make) \(car.model)")
-            
+                    
                 }
-                
-                
-                
                 DispatchQueue.main.async {
                     self.cars = cars
                     completion()
@@ -83,17 +81,7 @@ class CarsController: ObservableObject {
     
     
     init() {
-        Task{
-            do {
-                let cars = try await self.fetchFavoriteCars()
-                DispatchQueue.main.async {
-                    self.favoriteCars = cars
-                }
-            } catch {
-                print(error.localizedDescription)
-            }
-        }
+        getFavoriteCar()
     }
     
-
 }

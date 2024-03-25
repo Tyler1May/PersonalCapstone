@@ -18,6 +18,7 @@ class AuthController: ObservableObject {
     @Published var email: String = ""
     @Published var password: String = ""
     
+    
     private let db = Firestore.firestore()
     
     init() {
@@ -38,6 +39,7 @@ class AuthController: ObservableObject {
         UserDefaults.standard.set(email, forKey: "email")
         UserDefaults.standard.set(password, forKey: "password")
     }
+    
     
     
     func login(email: String, password: String, _ comp: @escaping Completion) {

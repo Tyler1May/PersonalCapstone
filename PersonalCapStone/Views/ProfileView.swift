@@ -10,6 +10,7 @@ import SwiftUI
 struct ProfileView: View {
     
     @EnvironmentObject var authController: AuthController
+    @EnvironmentObject var carsController: CarsController
     @State private var isShowingAlert = false
     @State private var isPasswordVisible = false
     
@@ -69,6 +70,7 @@ struct ProfileView: View {
             
             Button {
                 authController.signOut()
+                carsController.filteredCars = []
             } label: {
                 Text("Sign Out")
                     .foregroundStyle(Color(AppTheme.text))
@@ -92,4 +94,5 @@ struct ProfileView: View {
 #Preview {
     ProfileView()
         .environmentObject(AuthController())
+        .environmentObject(CarsController())
 }
