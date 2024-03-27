@@ -19,6 +19,13 @@ struct ContentView: View {
                 LoginView()
             } else {
                 TabBarView()
+                    .onAppear {
+                        if API.shared.isLoaded == true {
+                            return
+                        } else {
+                            API.shared.isLoaded = true
+                        }
+                    }
             }
         }
     }

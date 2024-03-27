@@ -70,7 +70,9 @@ struct ProfileView: View {
             
             Button {
                 authController.signOut()
-                carsController.filteredCars = []
+                carsController.cars = []
+                carsController.favoriteCars = []
+                API.shared.imageDictionary = [:]
             } label: {
                 Text("Sign Out")
                     .foregroundStyle(Color(AppTheme.text))

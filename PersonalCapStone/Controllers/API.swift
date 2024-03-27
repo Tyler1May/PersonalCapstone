@@ -7,6 +7,9 @@
 
 import Foundation
 import SwiftUI
+import Firebase
+import FirebaseFirestore
+
 
 enum APICallErrors: Error, LocalizedError {
     case invalidSearchParam
@@ -15,9 +18,37 @@ enum APICallErrors: Error, LocalizedError {
     case invalidResponse
 }
 
-struct API {
+class API {
     static let baseUrl = "https://api.api-ninjas.com/v1/cars?"
-    var searchText: String
+    var searchText: String = String()
+    
+    static let shared = API()
+    
+    @Published var imageDictionary: [String: String] = [:]
+    @Published var isLoaded = false
+    
+    func setUpDictionary() {
+        if let currentUserUID = Auth.auth().currentUser?.uid {
+            Task {
+                do {
+                    let dictionary = try await Firestore.firestore().collection("users").document(currentUserUID).collection("CarImages").document("imageDictionary").getDocument()
+                    DispatchQueue.main.async {
+                        if let data = dictionary.data() {
+                            self.imageDictionary = data.compactMapValues { value in
+                                value as? String
+                            }
+                        } else {
+                            self.imageDictionary = [:]
+                        }
+                        CarsController.shared.setUpSubscribers()
+                    }
+                }
+            }
+        } else {
+            imageDictionary = [:]
+        }
+        
+    }
     
     static func getCars(param: String, year: String, searchText: String) async throws -> [Car] {
         let url = URL(string: "\(API.baseUrl)")!
@@ -51,36 +82,42 @@ struct API {
         
     }
     
-    static func getCarImg(q: String) async throws -> String? {
-        let url = URL(string: "https://www.googleapis.com/customsearch/v1?key=AIzaSyAVbz2mZPOpBNkzY5EXGI45fvDXyKAoeKU&cx=66dab38731f5e4960&q=\(q) front three-quarter view&searchType=image&num=1")!
+    func getCarImg(q: String) async throws -> String? {
         
-        let (data, response) = try await URLSession.shared.data(from: url)
-        
-//        let str = String(data: data, encoding: .utf8)
-//        print(String(describing: str))
-        
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw APICallErrors.invalidResponse
-        }
-        
-        if httpResponse.statusCode == 429 {
-            return nil
-        } else if httpResponse.statusCode != 200 {
-            throw APICallErrors.invalidJson
-        }
-        
-        guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else { throw APICallErrors.invalidJson }
-        
-        if let items = json["items"] as? [[String: Any]] {
-            for item in items {
-                if let link = item["link"] as? String {
-                    return link
+        if imageDictionary.keys.contains(q) {
+            return imageDictionary[q]
+        } else {
+            let url = URL(string: "https://www.googleapis.com/customsearch/v1?key=AIzaSyAVbz2mZPOpBNkzY5EXGI45fvDXyKAoeKU&cx=66dab38731f5e4960&q=\(q) front three-quarter view&searchType=image&num=1")!
+            
+            let (data, response) = try await URLSession.shared.data(from: url)
+            
+            //        let str = String(data: data, encoding: .utf8)
+            //        print(String(describing: str))
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw APICallErrors.invalidResponse
+            }
+            
+            if httpResponse.statusCode == 429 {
+                return nil
+            } else if httpResponse.statusCode != 200 {
+                throw APICallErrors.invalidJson
+            }
+            
+            guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else { throw APICallErrors.invalidJson }
+            
+            if let items = json["items"] as? [[String: Any]] {
+                for item in items {
+                    if let link = item["link"] as? String {
+                        imageDictionary[q] = link
+                        return link
+                    }
                 }
             }
+            
+            return nil
+            
         }
-        
-        return nil
-        
     }
 }
 

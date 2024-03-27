@@ -11,6 +11,8 @@ import FirebaseFirestoreSwift
 
 enum FetchErrors: Error {
     case noCurrentUser
+    case documentNotFound
+    case fetchingError(Error)
 }
 
 extension CarsController {
@@ -21,7 +23,6 @@ extension CarsController {
             throw FetchErrors.noCurrentUser
         }
         let db = Firestore.firestore()
-//        let currentUserUID = Auth.auth().currentUser?.uid ?? ""
         
         let arrOfData = try await db.collection("users").document(currentUserUID).collection("FavoriteCars").getDocuments().documents.map {
             do {
@@ -69,5 +70,49 @@ extension CarsController {
             print("Unable to delete favorite car")
         }
     }
+    
+    func addToImageCollection() {
+        guard !imageDictionary.isEmpty else {
+            return
+        }
+        let db = Firestore.firestore()
+        let currentUserUID = Auth.auth().currentUser?.uid ?? ""
+        let ref = db.collection("users").document(currentUserUID).collection("CarImages").document("imageDictionary")
+        
+        do {
+            let data = try Firestore.Encoder().encode(imageDictionary)
+            
+            ref.setData(data) { err in
+                if let err = err {
+                    print("Error adding document: \(err)")
+                } else {
+                    print("Document added with ID: \(ref.documentID)")
+                }
+            }
+        } catch {
+            print("Unable to add Images")
+        }
+    }
+    
+    func fetchImages() async throws -> [String: Any]? {
+        guard let currentUserUID = Auth.auth().currentUser?.uid else {
+            throw FetchErrors.noCurrentUser
+        }
+        let db = Firestore.firestore()
+        let ref = db.collection("users").document(currentUserUID).collection("CarImages").document("imageDictionary")
+        
+        do {
+            let document = try await ref.getDocument()
+            
+            guard let data = document.data() else {
+                throw FetchErrors.documentNotFound
+            }
+            
+            return data
+        } catch {
+            throw FetchErrors.fetchingError(error)
+        }
+        
+    }
+    
 }
-

@@ -42,7 +42,7 @@ struct FavoritesView: View {
                                 Text(Image(systemName: "car.side.fill"))
                                     .padding()
                                 VStack(alignment: .leading) {
-                                    Text("Vehicle: \(car.make) \(car.model)")
+                                    Text("Vehicle: \(car.make.localizedCapitalized) \(car.model.localizedCapitalized)")
                                     Text("Year: \(String(car.year))")
                                 }
                                 Spacer()

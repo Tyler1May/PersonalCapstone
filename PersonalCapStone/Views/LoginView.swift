@@ -71,7 +71,7 @@ struct LoginView: View {
             Button {
                 authController.login(email: email, password: password) { success, str in
                     if !success {
-                        #warning("handle Errors")
+                        print("loging failed with error: \(str)")
                     }
                 }
             } label: {

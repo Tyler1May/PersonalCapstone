@@ -60,12 +60,12 @@ struct SignUpView: View {
     }
     
     func registerUser() {
-//        Task {
-//            try await authController.register(email:password:_:)
-//        }
-        //this code is for changing it to try await instead of using completion blocks
         authController.register(email: email, password: password) { success, str in
-            #warning("Handle Error")
+            if success {
+                print("Resgistration successful")
+            } else {
+                print("Registration failed with error: \(str)")
+            }
         }
         dismiss()
 

@@ -12,6 +12,7 @@ struct SearchView: View {
     @EnvironmentObject var carsController: CarsController
     
     @State var searchText = ""
+    @State var isLoading = false
     
     var body: some View {
         NavigationStack {
@@ -23,16 +24,18 @@ struct SearchView: View {
                             guard !searchText.isEmpty else {
                                 return
                             }
+                             isLoading = true
                             carsController.searchCars(param: carsController.selectedSearch, searchText: searchText, year: String(carsController.year)) {
-                                carsController.filterCars()
+                                isLoading = false
                             }
                         }
                     Button {
                         guard !searchText.isEmpty else {
                             return
                         }
+                        isLoading = true
                         carsController.searchCars(param: carsController.selectedSearch, searchText: searchText, year: String(carsController.year)) {
-                            carsController.filterCars()
+                            isLoading = false
                         }
                     } label: {
                         Image(systemName: "magnifyingglass")
@@ -63,41 +66,43 @@ struct SearchView: View {
                 }
                 .background(Color(AppTheme.primary))
                 
-                
-                
-                List(carsController.filteredCars) { car in
-                    NavigationLink(destination: CarDetailView(car: car)) {
-                        HStack {
-                            Text(Image(systemName: "car.side.fill"))
-                                .padding()
-                            VStack(alignment: .leading) {
-                                Text("Vehicle: \(car.make) \(car.model)")
-                                Text("Year: \(String(car.year))")
-                            }
-                            Spacer()
-                            Image(systemName: carsController.favoriteCars.contains(car) ? "star.fill" : "star")
-                                .font(.title)
-                                .foregroundStyle(carsController.favoriteCars.contains(car) ? .yellow : Color(AppTheme.text))
-                                .onTapGesture {
-                                    if carsController.favoriteCars.contains(car) {
-                                        for i in carsController.favoriteCars {
-                                            if i == car {
-                                                carsController.deleteFavoriteCars(firestoreID: i.firestoreId)
-                                            }
-                                        }
-                                        carsController.favoriteCars.removeAll(where: { $0 == car })
-                                    } else {
-                                        carsController.addToFavorites(carData: car)
-                                        carsController.getFavoriteCar()
-                                    }
+                if isLoading {
+                    Spacer()
+                    ProgressView()
+                } else {
+                    List(carsController.cars) { car in
+                        NavigationLink(destination: CarDetailView(car: car)) {
+                            HStack {
+                                Text(Image(systemName: "car.side.fill"))
+                                    .padding()
+                                VStack(alignment: .leading) {
+                                    Text("Vehicle: \(car.make.localizedCapitalized) \(car.model.localizedCapitalized)")
+                                    Text("Year: \(String(car.year))")
                                 }
+                                Spacer()
+                                Image(systemName: carsController.favoriteCars.contains(car) ? "star.fill" : "star")
+                                    .font(.title)
+                                    .foregroundStyle(carsController.favoriteCars.contains(car) ? .yellow : Color(AppTheme.text))
+                                    .onTapGesture {
+                                        if carsController.favoriteCars.contains(car) {
+                                            for i in carsController.favoriteCars {
+                                                if i == car {
+                                                    carsController.deleteFavoriteCars(firestoreID: i.firestoreId)
+                                                }
+                                            }
+                                            carsController.favoriteCars.removeAll(where: { $0 == car })
+                                        } else {
+                                            carsController.addToFavorites(carData: car)
+                                            carsController.getFavoriteCar()
+                                        }
+                                    }
+                            }
                         }
+                        .listRowBackground(Color.gray.opacity(0.2))
                     }
-                    .listRowBackground(Color.gray.opacity(0.2))
+                    .listRowSpacing(5)
+                    .scrollContentBackground(.hidden)
                 }
-                .listRowSpacing(5)
-                .scrollContentBackground(.hidden)
-                
                 Spacer()
             }
         }

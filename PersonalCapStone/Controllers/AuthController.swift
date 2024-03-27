@@ -40,8 +40,6 @@ class AuthController: ObservableObject {
         UserDefaults.standard.set(password, forKey: "password")
     }
     
-    
-    
     func login(email: String, password: String, _ comp: @escaping Completion) {
         Auth.auth().signIn(withEmail: email.lowercased(), password: password) { result, error in
             if let error = error {

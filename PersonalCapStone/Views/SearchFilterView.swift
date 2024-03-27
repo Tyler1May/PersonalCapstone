@@ -9,16 +9,12 @@ import SwiftUI
 
 struct SearchFilterView: View {
     
-    @State var minYear = String()
-    @State var maxYear = String()
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var carsController: CarsController
     @State var selectedSearch = ""
     let searchOptions = ["Make", "Model"]
     @State var selectedYear = Int()
     let years = Array(1990...2023)
-    @State var selectedSort = ""
-    let sortOptions = ["Newest To Oldest", "Oldest To Newest"]
     
     var body: some View {
         VStack(spacing: 0) {
@@ -55,28 +51,6 @@ struct SearchFilterView: View {
                 .foregroundStyle(Color(AppTheme.text))
                 .font(.custom("standard", size: 20))
                 
-//                Section("Sort By:") {
-//                    Picker("", selection: $selectedSort) {
-//                        ForEach(sortOptions, id: \.self) {
-//                            Text($0).tag($0)
-//                        }
-//                    }
-//                    .listRowBackground(Color(.gray.opacity(0.2)))
-//                    
-//                }
-//                .foregroundStyle(Color(AppTheme.text))
-//                .font(.custom("standard", size: 20))
-                
-//                Section("Filter Years:") {
-//                        TextField("From", text: $minYear)
-//                            .keyboardType(.numberPad)
-//                        TextField("To", text: $maxYear)
-//                            .keyboardType(.numberPad)
-//                }
-//                .listRowBackground(Color(.gray.opacity(0.2)))
-//                .foregroundStyle(Color(AppTheme.text))
-//                .font(.custom("standard", size: 20))
-                
             }
             .listRowSpacing(10)
             .scrollContentBackground(.hidden)
@@ -85,11 +59,7 @@ struct SearchFilterView: View {
             NavigationLink(destination: SearchView()) {
                 Button {
                     carsController.selectedSearch = selectedSearch.lowercased()
-                    carsController.selectedSort = selectedSort
-//                    carsController.maxYear = Int(maxYear) ?? 9999
-//                    carsController.minYear = Int(minYear) ?? 0
                     carsController.year = selectedYear
-                    carsController.filterCars()
                     dismiss()
                 } label: {
                     Text("Apply Filters")
@@ -107,11 +77,8 @@ struct SearchFilterView: View {
             .padding(.bottom)
         }
         .onAppear {
-//            minYear = carsController.minYear == 0 ? "" : String(carsController.minYear)
-//            maxYear = carsController.maxYear == 9999 ? "" : String(carsController.maxYear)
             selectedYear = carsController.year
             selectedSearch = carsController.selectedSearch.capitalized
-            selectedSort = carsController.selectedSort
         }
         .ignoresSafeArea()
     }
