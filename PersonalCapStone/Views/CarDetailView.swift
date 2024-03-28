@@ -10,6 +10,8 @@ import SwiftUI
 struct CarDetailView: View {
     
     var car: Car?
+    @State var showDetail = false
+    @State var showImg = false
     
     @Environment(\.dismiss) var dismiss
     
@@ -29,11 +31,11 @@ struct CarDetailView: View {
                     Spacer()
                 }
                 Text("\(car?.make.capitalized ?? "") \(car?.model.capitalized ?? "")")
-                    .foregroundStyle(Color(AppTheme.text))
+                    .foregroundStyle(Color(AppTheme.buttonText))
                     .font(.largeTitle)
             }
             .padding()
-            .frame(height: 150)
+            .frame(height: 160)
             .background(Color(AppTheme.primary))
             .clipShape(RoundedShape(corners: [.bottomLeft]))
             
@@ -41,12 +43,18 @@ struct CarDetailView: View {
                 AsyncImage(url: URL(string: car?.img ?? "")) { phase in
                     switch phase {
                     case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 375, height: 225)
-                            .clipShape(LessRoundedShape(corners: [.allCorners]))
-                            .padding()
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 375, height: 225)
+                                .clipShape(LessRoundedShape(corners: [.allCorners]))
+                                .padding()
+                                .scaleEffect(showImg ? 1 : 0.25)
+                                .onAppear {
+                                    withAnimation(.easeIn.speed(1)) {
+                                        showImg = true
+                                    }
+                                }
                     case .empty:
                         Image(systemName: "car.side.fill")
                             .resizable()
@@ -54,6 +62,7 @@ struct CarDetailView: View {
                             .frame(width: 375, height: 225)
                             .clipShape(LessRoundedShape(corners: [.allCorners]))
                             .padding()
+                            .foregroundStyle(.clear)
                     case .failure(_):
                         Image(systemName: "car.side.fill")
                             .resizable()
@@ -73,13 +82,14 @@ struct CarDetailView: View {
                     }
                 }
                 
-                VStack(alignment: .leading) {
-                    ForEach(carDetails, id: \.self) { detail in
-                        Text(detail)
-                    }
+                if showDetail {
+                        VStack() {
+                            ForEach(carDetails, id: \.self) { detail in
+                                Text(detail)
+                            }
+                        }
+                        .foregroundStyle(Color(AppTheme.text))
                 }
-                .foregroundStyle(Color(AppTheme.text))
-                .padding(.trailing, 175)
                 
                 Spacer()
                 
@@ -88,23 +98,25 @@ struct CarDetailView: View {
                 } label: {
                     HStack {
                         Text("Favorite")
-                            .foregroundStyle(Color(AppTheme.text))
+                            .foregroundStyle(Color(AppTheme.buttonText))
                             .padding(.trailing, 100)
                             .font(.title)
                         if !(car.map { carsController.favoriteCars.contains($0) } ?? false) {
                             Image(systemName: "star")
-                                .foregroundStyle(Color(AppTheme.text))
+                                .foregroundStyle(Color(AppTheme.buttonText))
                                 .font(.title)
+                                .contentTransition(.symbolEffect(.replace))
                         } else {
                             Image(systemName: "star.fill")
                                 .foregroundStyle(.yellow)
                                 .font(.title)
+                                .contentTransition(.symbolEffect(.replace))
                         }
                     }
                 }
                 .padding()
                 .frame(width: 350, height: 50)
-                .background(.gray.opacity(0.2))
+                .background(Color(AppTheme.primary))
                 .clipShape(RoundedShape(corners: [.allCorners]))
                 .padding()
                 
@@ -112,7 +124,7 @@ struct CarDetailView: View {
                     dismiss()
                 } label: {
                         Text("Back")
-                            .foregroundStyle(Color(AppTheme.text))
+                            .foregroundStyle(Color(AppTheme.buttonText))
                             .font(.largeTitle)
                          
                 }
@@ -125,6 +137,11 @@ struct CarDetailView: View {
         }
         .ignoresSafeArea()
         .navigationBarBackButtonHidden()
+        .onAppear {
+            withAnimation(.smooth.delay(0.2)) {
+                self.showDetail.toggle()
+            }
+        }
     }
     
     func getFavoriteCar() {

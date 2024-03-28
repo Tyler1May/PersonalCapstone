@@ -9,9 +9,31 @@ import Foundation
 import SwiftUI
 
 struct AppTheme {
+    @Environment(\.colorScheme) var colorScheme
+    
     static let primary = UIColor(red: 0/255, green: 191/255, blue: 178/255, alpha: 1.0)
-    static let button = UIColor(red: 25/255, green: 149/255, blue: 140/255, alpha: 1.0)
-    static let text = UIColor(red: 41/255, green: 41/255, blue: 41/255, alpha: 1.0)
+    static var button: Color {
+        Color(UIColor { traits in
+            switch traits.userInterfaceStyle {
+            case .dark:
+                return UIColor.black
+            default:
+                return UIColor.white
+            }
+        })
+    }
+    static var buttonText = UIColor(red: 41/255, green: 41/255, blue: 41/255, alpha: 1.0)
+    
+    static var text: Color {
+        Color(UIColor { traits in
+            switch traits.userInterfaceStyle {
+            case .dark:
+                return UIColor.white
+            default:
+                return UIColor(red: 41/255, green: 41/255, blue: 41/255, alpha: 1.0)
+            }
+        })
+    }
     
 }
 

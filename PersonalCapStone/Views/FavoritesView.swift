@@ -20,7 +20,7 @@ struct FavoritesView: View {
                         Spacer()
                     }
                     Text("Favorites")
-                        .foregroundStyle(Color(AppTheme.text))
+                        .foregroundStyle(Color(AppTheme.buttonText))
                         .font(.largeTitle)
                 }
                 .padding()
@@ -48,7 +48,8 @@ struct FavoritesView: View {
                                 Spacer()
                                 Image(systemName: carsController.favoriteCars.contains(car) ? "star.fill" : "star")
                                     .font(.title)
-                                    .foregroundStyle(carsController.favoriteCars.contains(car) ? .yellow : Color(AppTheme.text))
+                                    .contentTransition(.symbolEffect(.replace))
+                                    .foregroundStyle(.yellow)
                                     .onTapGesture {
                                         guard let favoriteI = carsController.favoriteCars.firstIndex(of: car) else { return }
                                         carsController.deleteFavoriteCars(firestoreID: car.firestoreId)

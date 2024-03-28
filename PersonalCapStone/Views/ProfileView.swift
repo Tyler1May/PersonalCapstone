@@ -22,7 +22,7 @@ struct ProfileView: View {
                     Spacer()
                 }
                 Text("Account")
-                    .foregroundStyle(Color(AppTheme.text))
+                    .foregroundStyle(Color(AppTheme.buttonText))
                     .font(.largeTitle)
             }
             .padding()
@@ -35,6 +35,7 @@ struct ProfileView: View {
                     Text("\(authController.email)")
                         .foregroundStyle(Color(AppTheme.text))
                 }
+                .listRowBackground(Color.clear)
                 .listSectionSpacing(50)
                 
                 Section("Password :") {
@@ -52,7 +53,7 @@ struct ProfileView: View {
                         isShowingAlert = true
                     } label: {
                         Text("Reset Password")
-                            .foregroundStyle(Color(AppTheme.text))
+                            .foregroundStyle(Color(AppTheme.buttonText))
                     }
                     .alert(isPresented: $isShowingAlert) {
                         Alert(title: Text("Are You Sure You Want To Reset Password"), message: Text("Reseting Password Will Sign You Out. Check Your email to reset password."), primaryButton: .destructive(Text("Reset"), action: resetPassword), secondaryButton: .default(Text("Cancel")))
@@ -62,6 +63,7 @@ struct ProfileView: View {
                     .clipShape(RoundedShape(corners: [.allCorners]))
 
                 }
+                .listRowBackground(Color.clear)
                 
             }
             .font(.title2)
@@ -75,7 +77,7 @@ struct ProfileView: View {
                 API.shared.imageDictionary = [:]
             } label: {
                 Text("Sign Out")
-                    .foregroundStyle(Color(AppTheme.text))
+                    .foregroundStyle(Color(AppTheme.buttonText))
                     .font(.title2)
             }
             .frame(width: 300, height: 50)

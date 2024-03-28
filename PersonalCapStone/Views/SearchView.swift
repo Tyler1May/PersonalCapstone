@@ -18,7 +18,11 @@ struct SearchView: View {
         NavigationStack {
             VStack(spacing: 0) {
                 HStack {
-                    TextField("Search By \(carsController.selectedSearch.capitalized)", text: $searchText)
+                    TextField("",
+                              text: $searchText,
+                              prompt: Text("Search By \(carsController.selectedSearch.capitalized)")
+                        .foregroundStyle(Color(AppTheme.text.opacity(0.5)))
+                    )
                         .padding(.trailing)
                         .onSubmit() {
                             guard !searchText.isEmpty else {
@@ -39,7 +43,7 @@ struct SearchView: View {
                         }
                     } label: {
                         Image(systemName: "magnifyingglass")
-                            .foregroundStyle(Color(AppTheme.text))
+                            .foregroundStyle(Color(AppTheme.button))
                             .font(.title)
                             .frame(width: 25)
                     }
@@ -59,7 +63,7 @@ struct SearchView: View {
                     }
                     .foregroundStyle(.white)
                     .frame(width: 100, height: 25)
-                    .background(.white)
+                    .background(Color(AppTheme.button))
                     .clipShape(RoundedShape(corners: [.allCorners]))
                     .padding(.trailing, 5)
                     .padding(.bottom)
@@ -82,7 +86,8 @@ struct SearchView: View {
                                 Spacer()
                                 Image(systemName: carsController.favoriteCars.contains(car) ? "star.fill" : "star")
                                     .font(.title)
-                                    .foregroundStyle(carsController.favoriteCars.contains(car) ? .yellow : Color(AppTheme.text))
+                                    .contentTransition(.symbolEffect(.replace))
+                                    .foregroundStyle(.yellow)
                                     .onTapGesture {
                                         if carsController.favoriteCars.contains(car) {
                                             for i in carsController.favoriteCars {

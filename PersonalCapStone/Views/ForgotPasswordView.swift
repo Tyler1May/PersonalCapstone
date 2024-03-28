@@ -20,10 +20,10 @@ struct ForgotPasswordView: View {
                 Spacer()
                 }
                 Text("Forgot your password?")
-                    .foregroundStyle(Color(AppTheme.text))
+                    .foregroundStyle(Color(AppTheme.buttonText))
                     .font(.largeTitle)
                 Text("Enter your email")
-                    .foregroundStyle(Color(AppTheme.text))
+                    .foregroundStyle(Color(AppTheme.buttonText))
                     .font(.largeTitle)
             }
             .padding()
@@ -43,7 +43,7 @@ struct ForgotPasswordView: View {
                 email = ""
             } label: {
                 Text("Reset")
-                    .foregroundStyle(Color(AppTheme.text))
+                    .foregroundStyle(Color(AppTheme.buttonText))
             }
             .alert(isPresented: $isShowingAlert) {
                 Alert(title: Text("Password Reset Sent"), message: Text("Check email to reset password"), dismissButton: .default(Text("OK")))
@@ -57,7 +57,7 @@ struct ForgotPasswordView: View {
                 dismiss()
             } label: {
                 Text("Back")
-                    .foregroundStyle(Color(AppTheme.text))
+                    .foregroundStyle(Color(AppTheme.buttonText))
             }
             .frame(width: 350, height: 50)
             .background(Color(AppTheme.primary))

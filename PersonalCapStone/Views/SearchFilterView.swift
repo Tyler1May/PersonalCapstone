@@ -23,7 +23,7 @@ struct SearchFilterView: View {
                     Spacer()
                 }
                 Text("Filter Search")
-                    .foregroundStyle(Color(AppTheme.text))
+                    .foregroundStyle(Color(AppTheme.buttonText))
                     .font(.largeTitle)
             }
             .padding()
@@ -63,7 +63,7 @@ struct SearchFilterView: View {
                     dismiss()
                 } label: {
                     Text("Apply Filters")
-                        .foregroundStyle(Color(AppTheme.text))
+                        .foregroundStyle(Color(AppTheme.buttonText))
                 }
                 .padding()
                 .frame(width: 250, height: 50)

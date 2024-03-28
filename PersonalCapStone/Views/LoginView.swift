@@ -20,10 +20,10 @@ struct LoginView: View {
                 Spacer()
                 }
                 Text("Welcome Back,")
-                    .foregroundStyle(Color(AppTheme.text))
+                    .foregroundStyle(Color(AppTheme.buttonText))
                     .font(.largeTitle)
                 Text("Lets get searching")
-                    .foregroundStyle(Color(AppTheme.text))
+                    .foregroundStyle(Color(AppTheme.buttonText))
                     .font(.largeTitle)
             }
             .padding()
@@ -76,7 +76,7 @@ struct LoginView: View {
                 }
             } label: {
                 Text("Login")
-                    .foregroundStyle(Color(AppTheme.text))
+                    .foregroundStyle(Color(AppTheme.buttonText))
             }
             .frame(width: 350, height: 50)
             .background(Color(AppTheme.primary))

@@ -20,10 +20,10 @@ struct SignUpView: View {
                 Spacer()
                 }
                 Text("Lets get started,")
-                    .foregroundStyle(Color(AppTheme.text))
+                    .foregroundStyle(Color(AppTheme.buttonText))
                     .font(.largeTitle)
                 Text("Create Your Account")
-                    .foregroundStyle(Color(AppTheme.text))
+                    .foregroundStyle(Color(AppTheme.buttonText))
                     .font(.largeTitle)
             }
             .padding()
@@ -41,7 +41,7 @@ struct SignUpView: View {
             
             Button(action: registerUser) {
                 Text("Create Account")
-                    .foregroundStyle(Color(AppTheme.text))
+                    .foregroundStyle(Color(AppTheme.buttonText))
             }
             .frame(width: 350, height: 50)
             .background(Color(AppTheme.primary))
