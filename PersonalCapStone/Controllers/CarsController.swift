@@ -14,6 +14,7 @@ class CarsController: ObservableObject {
     @Published var favoriteCars: [Car] = []
     @Published var selectedSearch = "Make"
     @Published var year = 2023
+    @Published var isFilterShowing = false
     /// uncomment if api changes to return multiple years
     //    @Published var filteredCars: [Car] = []
     //    @Published var selectedSort = "Newest To Oldest"
@@ -88,6 +89,7 @@ class CarsController: ObservableObject {
         }
         .store(in: &cancellables)
     }
+    
     
     func getFavoriteCar() {
         Task {

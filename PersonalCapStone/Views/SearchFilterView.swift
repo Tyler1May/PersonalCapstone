@@ -15,22 +15,10 @@ struct SearchFilterView: View {
     let searchOptions = ["Make", "Model"]
     @State var selectedYear = Int()
     let years = Array(1990...2023)
+    @State var isFilterShowing: Bool = Bool()
     
     var body: some View {
-        VStack(spacing: 0) {
-            VStack(alignment: .leading) {
-                HStack {
-                    Spacer()
-                }
-                Text("Filter Search")
-                    .foregroundStyle(Color(AppTheme.buttonText))
-                    .font(.largeTitle)
-            }
-            .padding()
-            .frame(height: 150)
-            .background(Color(AppTheme.primary))
-            .clipShape(RoundedShape(corners: [.bottomRight]))
-            
+        VStack() {
             Form {
                 Section("Search By:") {
                     Picker("", selection: $selectedSearch) {
@@ -38,14 +26,14 @@ struct SearchFilterView: View {
                             Text($0).tag($0)
                         }
                     }
-                    .listRowBackground(Color(.gray.opacity(0.2)))
+                    .listRowBackground(Color(.white))
                     
                     Picker("", selection: $selectedYear) {
                         ForEach(years, id: \.self) { year in
                             Text(String(year)).tag(year)
                         }
                     }
-                    .listRowBackground(Color(.gray.opacity(0.2)))
+                    .listRowBackground(Color(.white))
                     
                 }
                 .foregroundStyle(Color(AppTheme.text))
@@ -56,31 +44,29 @@ struct SearchFilterView: View {
             .scrollContentBackground(.hidden)
             .scrollDisabled(true)
             
-            NavigationLink(destination: SearchView()) {
-                Button {
-                    carsController.selectedSearch = selectedSearch.lowercased()
-                    carsController.year = selectedYear
-                    dismiss()
-                } label: {
-                    Text("Apply Filters")
-                        .foregroundStyle(Color(AppTheme.buttonText))
+            Button {
+                carsController.selectedSearch = selectedSearch.lowercased()
+                carsController.year = selectedYear
+                withAnimation(.bouncy) {
+                    carsController.isFilterShowing = false
                 }
-                .padding()
-                .frame(width: 250, height: 50)
-                .background(Color(AppTheme.primary))
-                .clipShape(RoundedShape(corners: [.allCorners]))
-                .padding()
-                
-                Spacer()
+            } label: {
+                Text("Apply Filters")
+                    .foregroundStyle(Color(AppTheme.buttonText))
             }
-            .padding(.leading, 60)
-            .padding(.bottom)
+            .padding()
+            .frame(width: 250, height: 50)
+            .background(.white)
+            .clipShape(RoundedShape(corners: [.allCorners]))
+            .padding()
+            
         }
         .onAppear {
             selectedYear = carsController.year
             selectedSearch = carsController.selectedSearch.capitalized
         }
         .ignoresSafeArea()
+        .background(Color(AppTheme.primary))
     }
 }
 

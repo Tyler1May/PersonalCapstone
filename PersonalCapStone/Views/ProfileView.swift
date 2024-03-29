@@ -38,17 +38,7 @@ struct ProfileView: View {
                 .listRowBackground(Color.clear)
                 .listSectionSpacing(50)
                 
-                Section("Password :") {
-                    HStack {
-                        Text(isPasswordVisible ? "\(authController.password)" : "***********")
-                        Spacer()
-                        Image(systemName: isPasswordVisible ? "eye.fill" : "eye.slash.fill")
-                            .foregroundStyle(Color(AppTheme.text))
-                            .padding()
-                            .onTapGesture {
-                                isPasswordVisible.toggle()
-                            }
-                    }
+                Section("") {
                     Button {
                         isShowingAlert = true
                     } label: {
@@ -71,10 +61,10 @@ struct ProfileView: View {
             .scrollContentBackground(.hidden)
             
             Button {
-                authController.signOut()
                 carsController.cars = []
                 carsController.favoriteCars = []
                 API.shared.imageDictionary = [:]
+                authController.signOut()
             } label: {
                 Text("Sign Out")
                     .foregroundStyle(Color(AppTheme.buttonText))

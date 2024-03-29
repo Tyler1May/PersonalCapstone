@@ -29,6 +29,9 @@ struct SearchView: View {
                                 return
                             }
                              isLoading = true
+                            withAnimation(.bouncy) {
+                                carsController.isFilterShowing = false
+                            }
                             carsController.searchCars(param: carsController.selectedSearch, searchText: searchText, year: String(carsController.year)) {
                                 isLoading = false
                             }
@@ -38,6 +41,9 @@ struct SearchView: View {
                             return
                         }
                         isLoading = true
+                        withAnimation(.bouncy) {
+                            carsController.isFilterShowing = false
+                        }
                         carsController.searchCars(param: carsController.selectedSearch, searchText: searchText, year: String(carsController.year)) {
                             isLoading = false
                         }
@@ -52,23 +58,36 @@ struct SearchView: View {
                 .frame(width: 400, height: 50)
                 .textFieldStyle(.roundedBorder)
                 .background(Color(AppTheme.primary))
-                HStack {
-                    Spacer()
-                    NavigationLink {
-                        SearchFilterView(selectedSearch: carsController.selectedSearch)
-                            .toolbar(.hidden)
-                    } label: {
-                        Text("\(Image(systemName: "slider.horizontal.3"))  Filter")
-                            .foregroundStyle(Color(AppTheme.text))
+                
+                VStack {
+                    if !carsController.isFilterShowing {
+                        withAnimation(.smooth(duration: 0.5)) {
+                            Button {
+                                withAnimation(.bouncy) {
+                                    carsController.isFilterShowing = true
+                                }
+                            } label: {
+                                Text("\(Image(systemName: "slider.horizontal.3"))  Filter")
+                                    .foregroundStyle(Color(AppTheme.text))
+                            }
+                            .foregroundStyle(.white)
+                            .frame(width: 100, height: 25)
+                            .background(Color(AppTheme.button))
+                            .clipShape(RoundedShape(corners: [.allCorners]))
+                            .padding(.trailing, 5)
+                            .padding(.bottom)
+                        }
                     }
-                    .foregroundStyle(.white)
-                    .frame(width: 100, height: 25)
-                    .background(Color(AppTheme.button))
-                    .clipShape(RoundedShape(corners: [.allCorners]))
-                    .padding(.trailing, 5)
-                    .padding(.bottom)
+                        
+                    if carsController.isFilterShowing {
+                        SearchFilterView()
+                    }
                 }
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .clipShape(LessRoundedShape(corners: [.bottomLeft,.bottomRight]))
                 .background(Color(AppTheme.primary))
+                    
+                    
                 
                 if isLoading {
                     Spacer()

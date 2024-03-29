@@ -56,7 +56,7 @@ class API {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
         
         components.queryItems = [
-            "limit": "1",
+            "limit": "5",
             "\(param.lowercased())": "\(searchText)",
             "year": "\(year)"
         ].map { URLQueryItem(name: $0.key, value: $0.value) }
