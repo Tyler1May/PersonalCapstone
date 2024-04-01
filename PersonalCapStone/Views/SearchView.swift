@@ -13,6 +13,7 @@ struct SearchView: View {
     
     @State var searchText = ""
     @State var isLoading = false
+    @State var firstLoad = true
     
     var body: some View {
         NavigationStack {
@@ -34,6 +35,7 @@ struct SearchView: View {
                             }
                             carsController.searchCars(param: carsController.selectedSearch, searchText: searchText, year: String(carsController.year)) {
                                 isLoading = false
+                                firstLoad = false
                             }
                         }
                     Button {
@@ -46,6 +48,7 @@ struct SearchView: View {
                         }
                         carsController.searchCars(param: carsController.selectedSearch, searchText: searchText, year: String(carsController.year)) {
                             isLoading = false
+                            firstLoad = false
                         }
                     } label: {
                         Image(systemName: "magnifyingglass")
@@ -81,6 +84,7 @@ struct SearchView: View {
                         
                     if carsController.isFilterShowing {
                         SearchFilterView()
+                            .frame(maxHeight: 250)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
@@ -92,6 +96,13 @@ struct SearchView: View {
                 if isLoading {
                     Spacer()
                     ProgressView()
+                } else if firstLoad == true {
+                    Spacer()
+                } else if carsController.cars.isEmpty{
+                    Spacer()
+                    Text("No Results Found")
+                        .font(.largeTitle)
+                        .opacity(0.2)
                 } else {
                     List(carsController.cars) { car in
                         NavigationLink(destination: CarDetailView(car: car)) {

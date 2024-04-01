@@ -12,8 +12,8 @@ struct ApiCar: Codable {
     var city_mpg: Int
     var `class`: String
     var combination_mpg: Int
-    var cylinders: Int
-    var displacement: Double
+    var cylinders: Int?
+    var displacement: Double?
     var drive: String
     var fuel_type: String
     var highway_mpg: Int
