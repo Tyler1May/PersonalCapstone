@@ -11,24 +11,22 @@ struct SearchFilterView: View {
     
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var carsController: CarsController
-    @State var selectedSearch = ""
     let searchOptions = ["Make", "Model"]
-    @State var selectedYear = Int()
     let years = Array(1990...2023)
     @State var isFilterShowing: Bool = Bool()
-    
+        
     var body: some View {
         VStack() {
             Form {
                 Section("Search By:") {
-                    Picker("", selection: $selectedSearch) {
+                    Picker("", selection: $carsController.selectedSearch) {
                         ForEach(searchOptions, id: \.self) {
                             Text($0).tag($0)
                         }
                     }
                     .listRowBackground(Color(.white))
                     
-                    Picker("", selection: $selectedYear) {
+                    Picker("", selection: $carsController.year) {
                         ForEach(years, id: \.self) { year in
                             Text(String(year)).tag(year)
                         }
@@ -45,8 +43,6 @@ struct SearchFilterView: View {
             .scrollDisabled(true)
             
             Button {
-                carsController.selectedSearch = selectedSearch.lowercased()
-                carsController.year = selectedYear
                 withAnimation(.bouncy) {
                     carsController.isFilterShowing = false
                 }
@@ -60,10 +56,6 @@ struct SearchFilterView: View {
             .clipShape(RoundedShape(corners: [.allCorners]))
             .padding()
             
-        }
-        .onAppear {
-            selectedYear = carsController.year
-            selectedSearch = carsController.selectedSearch.capitalized
         }
         .ignoresSafeArea()
         .background(Color(AppTheme.primary))

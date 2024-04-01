@@ -34,17 +34,22 @@ struct LoginView: View {
             VStack {
                 CustomTextField(imageName: "envelope", placeHolder: "Email", text: $email)
                     .padding()
-                if let errorText {
-                    Text(errorText)
-                        .foregroundStyle(Color.red)
-                }
+                    .onChange(of: email) {
+                        self.errorText = nil
+                    }
                 HStack {
                     if isPasswordVisible {
                         CustomTextField(imageName: "lock", placeHolder: "Password", text: $password)
                             .padding()
+                            .onChange(of: password) {
+                                self.errorText = nil
+                            }
                     } else {
                         CustomSecureTextField(imageName: "lock", placeHolder: "Password", text: $password)
                             .padding()
+                            .onChange(of: password) {
+                                self.errorText = nil
+                            }
                     }
                 }.overlay(alignment: .trailing) {
                     Image(systemName: isPasswordVisible ? "eye.fill" : "eye.slash.fill")
@@ -53,6 +58,10 @@ struct LoginView: View {
                         .onTapGesture {
                             isPasswordVisible.toggle()
                         }
+                }
+                if let errorText {
+                    Text(errorText)
+                        .foregroundStyle(Color.red)
                 }
             }
             
@@ -72,6 +81,9 @@ struct LoginView: View {
                 authController.login(email: email, password: password) { success, str in
                     if !success {
                         print("loging failed with error: \(str)")
+                        withAnimation(.bouncy) {
+                            self.errorText = "Incorrect Email or Password"
+                        }
                     }
                 }
             } label: {
