@@ -17,7 +17,6 @@ class AuthController: ObservableObject {
     @Published var userSession: FirebaseAuth.User?
     @Published var email: String = ""
     
-    
     private let db = Firestore.firestore()
     
     init() {

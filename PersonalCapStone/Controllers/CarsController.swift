@@ -57,13 +57,11 @@ class CarsController: ObservableObject {
         Task {
             do {
                 
-                var cars = try await API.getCars(param: param, year: year, searchText: searchText)
-                for (i, car) in cars.enumerated() {
-                    cars[i].img = try await API.shared.getCarImg(q: "\(car.year) \(car.make) \(car.model)")
-                    
-                }
+                let cars = try await API.getCars(param: param, year: year, searchText: searchText)
+                let result = cars
+                
                 DispatchQueue.main.async {
-                    self.cars = cars
+                    self.cars = result
                     completion()
                 }
             } catch {
@@ -71,6 +69,7 @@ class CarsController: ObservableObject {
             }
         }
     }
+    
     
     func setUpSubscribers() {
         API.shared.$imageDictionary.sink { [weak self] dictionary in
@@ -82,7 +81,7 @@ class CarsController: ObservableObject {
     }
     
     func setUpIsLoadedSubscriber() {
-        API.shared.$isLoaded.sink { [weak self] isLoaded in
+        API.shared.$isLoaded.sink { isLoaded in
             if isLoaded {
                 API.shared.setUpDictionary()
             }

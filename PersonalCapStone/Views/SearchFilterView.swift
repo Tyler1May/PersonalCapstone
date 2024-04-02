@@ -24,17 +24,15 @@ struct SearchFilterView: View {
                             Text($0).tag($0)
                         }
                     }
-                    .listRowBackground(Color(.white))
                     
                     Picker("", selection: $carsController.year) {
                         ForEach(years, id: \.self) { year in
                             Text(String(year)).tag(year)
                         }
                     }
-                    .listRowBackground(Color(.white))
                     
                 }
-                .foregroundStyle(Color(AppTheme.text))
+                .foregroundStyle(Color(AppTheme.buttonText))
                 .font(.custom("standard", size: 20))
                 
             }
@@ -48,11 +46,11 @@ struct SearchFilterView: View {
                 }
             } label: {
                 Text("Apply Filters")
-                    .foregroundStyle(Color(AppTheme.buttonText))
+                    .foregroundStyle(Color(AppTheme.text))
             }
             .padding()
             .frame(width: 250, height: 50)
-            .background(.white)
+            .background(Color(AppTheme.button))
             .clipShape(RoundedShape(corners: [.allCorners]))
             .padding()
             

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CarDetailView: View {
     
-    var car: Car?
+    @State var car: Car?
     @State var showDetail = false
     @State var showImg = false
     
@@ -19,7 +19,7 @@ struct CarDetailView: View {
     
     var carDetails: [String] {
         [
-            "Make: \(car?.make.capitalized ?? "")", "Model: \(car?.model.capitalized ?? "") ", "Year: \(car?.year ?? 0)", "Fuel Type: \(car?.fuel_type ?? "")", "Drive: \(car?.drive ?? "")", "Transmission: \(car?.transmissionDescription ?? "")", "Cylinders: \(car?.cylinders ?? 0)", "Displacement: \(car?.displacement ?? 0)",
+            "Make: \(car?.make.capitalized ?? "")", "Model: \(car?.model.capitalized ?? "") ", "Year: \(car?.year ?? 0)", "Class: \(car?.carClass ?? "")", "Fuel Type: \(car?.fuel_type ?? "")", "Drive: \(car?.drive ?? "")", "Transmission: \(car?.transmissionDescription ?? "")", "Cylinders: \(car?.cylinders ?? 0)", "Displacement: \(car?.displacement ?? 0)",
             "Highway Mpg: \(car?.highway_mpg ?? 0)", "City Mpg: \(car?.city_mpg ?? 0)", "Combination Mpg: \(car?.combination_mpg ?? 0)"
         ]
     }
@@ -46,7 +46,7 @@ struct CarDetailView: View {
                             image
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 375, height: 225)
+                                .frame(width: 375, height: 200)
                                 .clipShape(LessRoundedShape(corners: [.allCorners]))
                                 .padding()
                                 .scaleEffect(showImg ? 1 : 0.25)
@@ -56,13 +56,8 @@ struct CarDetailView: View {
                                     }
                                 }
                     case .empty:
-                        Image(systemName: "car.side.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
+                        ProgressView()
                             .frame(width: 375, height: 225)
-                            .clipShape(LessRoundedShape(corners: [.allCorners]))
-                            .padding()
-                            .foregroundStyle(.clear)
                     case .failure(_):
                         Image(systemName: "car.side.fill")
                             .resizable()
@@ -118,7 +113,6 @@ struct CarDetailView: View {
                 .frame(width: 350, height: 50)
                 .background(Color(AppTheme.primary))
                 .clipShape(RoundedShape(corners: [.allCorners]))
-                .padding()
                 
                 Button {
                     dismiss()
@@ -134,12 +128,24 @@ struct CarDetailView: View {
                 .clipShape(RoundedShape(corners: [.allCorners]))
             
             }
+            Spacer(minLength: 5)
         }
         .ignoresSafeArea()
         .navigationBarBackButtonHidden()
         .onAppear {
             withAnimation(.smooth.delay(0.2)) {
                 self.showDetail.toggle()
+            }
+            Task {
+                do {
+                    if let car = car {
+                        var carImg = car
+                        carImg.img = try await API.shared.getCarImg(q: "\(car.year) \(car.make) \(car.model)")
+                        self.car = carImg
+                    }
+                } catch {
+                    print("Error getting car image: \(error)")
+                }
             }
         }
     }
