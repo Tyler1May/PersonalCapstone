@@ -34,8 +34,18 @@ struct SignUpView: View {
             VStack {
                 CustomTextField(imageName: "envelope", placeHolder: "Email", text: $email)
                     .padding()
+                    .submitLabel(.return)
+                    .autocorrectionDisabled()
+                    .onSubmit {
+                        hideKeyboard()
+                    }
                 CustomTextField(imageName: "lock", placeHolder: "Password", text: $password)
                     .padding()
+                    .submitLabel(.return)
+                    .autocorrectionDisabled()
+                    .onSubmit {
+                        hideKeyboard()
+                    }
             }
             .padding()
             

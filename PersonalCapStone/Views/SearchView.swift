@@ -25,6 +25,8 @@ struct SearchView: View {
                         .foregroundStyle(Color(AppTheme.text.opacity(0.5)))
                     )
                         .padding(.trailing)
+                        .submitLabel(.search)
+                        .autocorrectionDisabled()
                         .onSubmit() {
                             guard !searchText.isEmpty else {
                                 return
@@ -37,6 +39,7 @@ struct SearchView: View {
                                 isLoading = false
                                 firstLoad = false
                             }
+                            hideKeyboard()
                         }
                     Button {
                         guard !searchText.isEmpty else {
@@ -58,7 +61,7 @@ struct SearchView: View {
                     }
                 }
                 .padding()
-                .frame(width: 400, height: 50)
+                .frame(maxWidth: .infinity, maxHeight: 50)
                 .textFieldStyle(.roundedBorder)
                 .background(Color(AppTheme.primary))
                 

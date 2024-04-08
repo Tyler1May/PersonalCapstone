@@ -34,6 +34,11 @@ struct ForgotPasswordView: View {
             VStack {
                 CustomTextField(imageName: "envelope", placeHolder: "Email", text: $email)
                     .padding()
+                    .submitLabel(.return)
+                    .autocorrectionDisabled()
+                    .onSubmit {
+                        hideKeyboard()
+                    }
             }
             .padding()
             

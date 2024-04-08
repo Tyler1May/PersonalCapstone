@@ -25,17 +25,13 @@ struct CarDetailView: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack() {
             VStack(alignment: .trailing) {
-                HStack {
-                    Spacer()
-                }
                 Text("\(car?.make.capitalized ?? "") \(car?.model.capitalized ?? "")")
                     .foregroundStyle(Color(AppTheme.buttonText))
                     .font(.largeTitle)
             }
-            .padding()
-            .frame(height: 160)
+            .frame( maxWidth: .infinity, maxHeight: 210)
             .background(Color(AppTheme.primary))
             .clipShape(RoundedShape(corners: [.bottomLeft]))
             
@@ -83,10 +79,9 @@ struct CarDetailView: View {
                                 Text(detail)
                             }
                         }
+                        .padding(.bottom)
                         .foregroundStyle(Color(AppTheme.text))
                 }
-                
-                Spacer()
                 
                 Button {
                     toggleFavCar()
@@ -128,7 +123,6 @@ struct CarDetailView: View {
                 .clipShape(RoundedShape(corners: [.allCorners]))
             
             }
-            Spacer(minLength: 5)
         }
         .ignoresSafeArea()
         .navigationBarBackButtonHidden()

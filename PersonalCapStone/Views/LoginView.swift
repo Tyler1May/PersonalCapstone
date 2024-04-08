@@ -34,21 +34,36 @@ struct LoginView: View {
             VStack {
                 CustomTextField(imageName: "envelope", placeHolder: "Email", text: $email)
                     .padding()
+                    .submitLabel(.return)
+                    .autocorrectionDisabled()
                     .onChange(of: email) {
                         self.errorText = nil
+                    }
+                    .onSubmit {
+                        hideKeyboard()
                     }
                 HStack {
                     if isPasswordVisible {
                         CustomTextField(imageName: "lock", placeHolder: "Password", text: $password)
                             .padding()
+                            .submitLabel(.return)
+                            .autocorrectionDisabled()
                             .onChange(of: password) {
                                 self.errorText = nil
+                            }
+                            .onSubmit {
+                                hideKeyboard()
                             }
                     } else {
                         CustomSecureTextField(imageName: "lock", placeHolder: "Password", text: $password)
                             .padding()
+                            .submitLabel(.return)
+                            .autocorrectionDisabled()
                             .onChange(of: password) {
                                 self.errorText = nil
+                            }
+                            .onSubmit {
+                                hideKeyboard()
                             }
                     }
                 }.overlay(alignment: .trailing) {

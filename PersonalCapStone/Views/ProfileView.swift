@@ -26,7 +26,7 @@ struct ProfileView: View {
                     .font(.largeTitle)
             }
             .padding()
-            .frame(height: 150)
+            .frame(maxHeight: 150)
             .background(Color(AppTheme.primary))
             .clipShape(RoundedShape(corners: [.bottomLeft]))
             
@@ -37,28 +37,24 @@ struct ProfileView: View {
                 }
                 .listRowBackground(Color.clear)
                 .listSectionSpacing(50)
-                
-                Section("") {
-                    Button {
-                        isShowingAlert = true
-                    } label: {
-                        Text("Reset Password")
-                            .foregroundStyle(Color(AppTheme.buttonText))
-                    }
-                    .alert(isPresented: $isShowingAlert) {
-                        Alert(title: Text("Are You Sure You Want To Reset Password"), message: Text("Reseting Password Will Sign You Out. Check Your email to reset password."), primaryButton: .destructive(Text("Reset"), action: resetPassword), secondaryButton: .default(Text("Cancel")))
-                    }
-                    .frame(width: 300, height: 50)
-                    .background(Color(AppTheme.primary))
-                    .clipShape(RoundedShape(corners: [.allCorners]))
-
-                }
-                .listRowBackground(Color.clear)
-                
             }
             .font(.title2)
             .listRowSpacing(10)
             .scrollContentBackground(.hidden)
+            
+            Button {
+                isShowingAlert = true
+            } label: {
+                Text("Reset Password")
+                    .foregroundStyle(Color(AppTheme.buttonText))
+                    .font(.title2)
+            }
+            .alert(isPresented: $isShowingAlert) {
+                Alert(title: Text("Are You Sure You Want To Reset Password"), message: Text("Reseting Password Will Sign You Out. Check Your email to reset password."), primaryButton: .destructive(Text("Reset"), action: resetPassword), secondaryButton: .default(Text("Cancel")))
+            }
+            .frame(width: 300, height: 50)
+            .background(Color(AppTheme.primary))
+            .clipShape(RoundedShape(corners: [.allCorners]))
             
             Button {
                 carsController.cars = []
@@ -74,7 +70,6 @@ struct ProfileView: View {
             .background(.red)
             .clipShape(RoundedShape(corners: [.allCorners]))
             .padding(.bottom, 100)
-            Spacer()
         }
         .ignoresSafeArea()
     }
