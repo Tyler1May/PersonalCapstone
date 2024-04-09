@@ -25,7 +25,7 @@ struct SearchView: View {
                         .foregroundStyle(Color(AppTheme.text.opacity(0.5)))
                     )
                         .padding(.trailing)
-                        .submitLabel(.search)
+                        .submitLabel(.return)
                         .autocorrectionDisabled()
                         .onSubmit() {
                             guard !searchText.isEmpty else {
@@ -53,6 +53,7 @@ struct SearchView: View {
                             isLoading = false
                             firstLoad = false
                         }
+                        hideKeyboard()
                     } label: {
                         Image(systemName: "magnifyingglass")
                             .foregroundStyle(Color(AppTheme.button))
@@ -101,6 +102,12 @@ struct SearchView: View {
                     ProgressView()
                 } else if firstLoad == true {
                     Spacer()
+                    Text("Search A Car By Make")
+                        .font(.largeTitle)
+                        .opacity(0.2)
+                    Text("Or Model")
+                        .font(.largeTitle)
+                        .opacity(0.2)
                 } else if carsController.cars.isEmpty{
                     Spacer()
                     Text("No Results Found")
@@ -117,18 +124,18 @@ struct SearchView: View {
                                     Text("Year: \(String(car.year))")
                                 }
                                 Spacer()
-                                Image(systemName: carsController.favoriteCars.contains(car) ? "star.fill" : "star")
+                                Image(systemName: carsController.favoriteCars.contains(where: {$0.id == car.id}) ? "star.fill" : "star")
                                     .font(.title)
                                     .contentTransition(.symbolEffect(.replace))
                                     .foregroundStyle(.yellow)
                                     .onTapGesture {
-                                        if carsController.favoriteCars.contains(car) {
+                                        if carsController.favoriteCars.contains(where: {$0.id == car.id}) {
                                             for i in carsController.favoriteCars {
-                                                if i == car {
+                                                if i.id == car.id {
                                                     carsController.deleteFavoriteCars(firestoreID: i.firestoreId)
                                                 }
                                             }
-                                            carsController.favoriteCars.removeAll(where: { $0 == car })
+                                            carsController.favoriteCars.removeAll(where: { $0.id == car.id })
                                         } else {
                                             carsController.addToFavorites(carData: car)
                                             carsController.getFavoriteCar()

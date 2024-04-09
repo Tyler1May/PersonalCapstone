@@ -46,7 +46,7 @@ struct FavoritesView: View {
                                     Text("Year: \(String(car.year))")
                                 }
                                 Spacer()
-                                Image(systemName: carsController.favoriteCars.contains(car) ? "star.fill" : "star")
+                                Image(systemName: carsController.favoriteCars.contains(where: {$0.id == car.id}) ? "star.fill" : "star")
                                     .font(.title)
                                     .contentTransition(.symbolEffect(.replace))
                                     .foregroundStyle(.yellow)

@@ -11,7 +11,9 @@ import FirebaseFirestoreSwift
 
 struct Car: Codable, Equatable, Identifiable {
     @DocumentID var firestoreId: String?
-    var id = UUID().uuidString
+    var id: String {
+        "\(year)" + make + model + "\(displacement ?? 0)" + drive + transmission
+    }
     var city_mpg: Int
     var carClass: String
     var combination_mpg: Int

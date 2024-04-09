@@ -91,7 +91,7 @@ struct CarDetailView: View {
                             .foregroundStyle(Color(AppTheme.buttonText))
                             .padding(.trailing, 100)
                             .font(.title)
-                        if !(car.map { carsController.favoriteCars.contains($0) } ?? false) {
+                        if !carsController.favoriteCars.contains(where: {$0.id == car?.id}) {
                             Image(systemName: "star")
                                 .foregroundStyle(Color(AppTheme.buttonText))
                                 .font(.title)
@@ -159,13 +159,13 @@ struct CarDetailView: View {
     
     func toggleFavCar() {
         if let car = car {
-            if carsController.favoriteCars.contains(car) {
+            if carsController.favoriteCars.contains(where: {$0.id == car.id}) {
                 for i in carsController.favoriteCars {
-                    if i == car {
+                    if i.id == car.id {
                         carsController.deleteFavoriteCars(firestoreID: i.firestoreId)
                     }
                 }
-                carsController.favoriteCars.removeAll(where: { $0 == car })
+                carsController.favoriteCars.removeAll(where: { $0.id == car.id })
             } else {
                 carsController.addToFavorites(carData: car)
                 getFavoriteCar()
