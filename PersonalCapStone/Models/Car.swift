@@ -12,7 +12,7 @@ import FirebaseFirestoreSwift
 struct Car: Codable, Equatable, Identifiable {
     @DocumentID var firestoreId: String?
     var id: String {
-        "\(year)" + make + model + "\(displacement ?? 0)" + drive + transmission
+        "\(year)" + make + model + "\(displacement ?? 0)" + drive + transmission + "\(highway_mpg)" + "\(city_mpg)" + "\(combination_mpg)"
     }
     var city_mpg: Int
     var carClass: String
